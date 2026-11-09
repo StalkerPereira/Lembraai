@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#FF6B4A">
+<title>Lembra Aí!</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF6E9; --card:#fff; --ink:#2B2340; --muted:#7A7189; --soft:#F3EADB;
+  --coral:#FF6B4A; --coral-d:#E2502F; --teal:#12B5A5; --teal-d:#0E8F83; --sun:#FFC93C; --lilac:#8B7CF6; --rose:#FF8FB1;
+  --r:20px; --sh:0 4px 0 var(--ink);
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px}
+body{min-height:100vh;padding-bottom:calc(40px + var(--safe-b));
+  background-image:radial-gradient(circle at 12% 8%,#FFE3C9 0 90px,transparent 91px),radial-gradient(circle at 92% 22%,#E1F7F3 0 70px,transparent 71px);background-repeat:no-repeat}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+.wrap{max-width:540px;margin:0 auto;padding:calc(10px + var(--safe-t)) 16px 0}
+h1,h2,h3,.f{font-family:Fredoka,Nunito,system-ui,sans-serif}
+.hidden{display:none!important}
+
+/* topo */
+.top{display:flex;align-items:center;justify-content:space-between;margin:4px 0 6px}
+.brand{font-family:Fredoka,sans-serif;font-weight:700;font-size:26px;letter-spacing:-.5px}
+.brand span{color:var(--coral)}
+.brand small{font-size:13px;color:var(--muted);font-weight:600;margin-left:6px}
+.iconbtn{width:44px;height:44px;border-radius:14px;border:2px solid var(--ink);background:#fff;box-shadow:0 3px 0 var(--ink);font-size:20px;display:inline-grid;place-items:center;transition:transform .08s,box-shadow .08s}
+.iconbtn:active{transform:translateY(3px);box-shadow:0 0 0 var(--ink)}
+.top-actions{display:flex;gap:8px}
+
+.preview-banner{background:var(--sun);border:2px solid var(--ink);border-radius:14px;padding:10px 12px;font-size:14px;font-weight:700;margin:6px 0 10px;box-shadow:var(--sh)}
+
+/* herói */
+.hero{display:flex;align-items:flex-end;gap:4px;margin:4px 0 8px;min-height:170px}
+.hero-av{width:142px;flex:0 0 142px;height:178px;border:0;background:none;padding:0;position:relative}
+.hero-av svg{width:100%;height:100%;overflow:visible}
+.hero-av .tap{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:800;background:var(--ink);color:#fff;border-radius:99px;padding:3px 9px;white-space:nowrap}
+.hero{margin-bottom:22px}
+.bubble{position:relative;flex:1;background:#fff;border:2px solid var(--ink);border-radius:22px;padding:14px 16px;box-shadow:var(--sh);margin-bottom:60px;font-weight:800;font-size:17px;line-height:1.3;min-height:64px}
+.bubble:before{content:"";position:absolute;left:-12px;bottom:18px;width:18px;height:18px;background:#fff;border-left:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg) skew(10deg,10deg);border-radius:0 0 0 5px}
+.bubble small{display:block;font-weight:700;color:var(--muted);font-size:13px;margin-top:4px}
+.bubble.pop{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(.85)}100%{transform:scale(1)}}
+
+.stats{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 8px;margin:0 -2px 6px;scrollbar-width:none}
+.stats::-webkit-scrollbar{display:none}
+.stat{flex:0 0 auto;background:#fff;border:2px solid var(--ink);border-radius:99px;padding:6px 12px;font-weight:800;font-size:14px;box-shadow:0 3px 0 var(--ink)}
+.stat b{font-family:Fredoka,sans-serif}
+
+.card{background:var(--card);border:2px solid var(--ink);border-radius:var(--r);box-shadow:var(--sh);padding:14px;margin-bottom:16px}
+
+/* setup */
+.setup h3{margin:0 0 8px;font-size:18px}
+.setup .item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;background:var(--soft);margin-top:8px;font-weight:800;border:0;width:100%;text-align:left}
+.setup .item .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;background:#fff;font-size:14px;flex:0 0 26px}
+.setup .item.ok{opacity:.6}
+.setup .item.ok .ck{background:var(--teal);color:#fff}
+.setup .item span.go{margin-left:auto;color:var(--coral-d)}
+.linkbtn{background:none;border:0;color:var(--muted);font-weight:800;text-decoration:underline;padding:6px 0 0;font-size:13px}
+
+/* compositor */
+.comp-row{display:flex;gap:10px;align-items:stretch}
+.comp-row textarea{flex:1;border:2px solid var(--ink);border-radius:16px;padding:12px 14px;font-size:17px;font-weight:700;resize:none;min-height:56px;max-height:140px;background:#FFFDF8;outline:none}
+.comp-row textarea:focus{border-color:var(--coral);box-shadow:0 0 0 3px #FFD7CC}
+.mic{width:60px;flex:0 0 60px;border-radius:18px;border:2px solid var(--ink);background:var(--coral);color:#fff;box-shadow:0 4px 0 var(--ink);display:grid;place-items:center;transition:transform .08s,box-shadow .08s}
+.mic:active{transform:translateY(4px);box-shadow:none}
+.mic svg{width:28px;height:28px}
+.prev{margin:10px 2px 2px;font-size:14px;font-weight:800;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px;min-height:22px}
+.tag{background:var(--soft);border-radius:99px;padding:3px 10px;color:var(--ink)}
+.tag.t{background:#FFE6DF}
+.tag.w{background:#E1F7F3}
+.tag.r{background:#ECE8FF}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{border:2px solid var(--ink);background:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-size:14px;box-shadow:0 2px 0 var(--ink)}
+.chip.on{background:var(--ink);color:#fff}
+.chip:active{transform:translateY(2px);box-shadow:none}
+.comp-foot{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.btn{border:2px solid var(--ink);border-radius:16px;padding:12px 18px;font-weight:900;font-size:16px;background:#fff;box-shadow:0 4px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--ink)}
+.btn.primary{background:var(--coral);color:#fff}
+.btn.teal{background:var(--teal);color:#fff}
+.btn.sun{background:var(--sun)}
+.btn.ghost{background:transparent;box-shadow:none;border-color:transparent;text-decoration:underline}
+.btn.block{width:100%}
+.btn.sm{padding:8px 12px;font-size:14px;border-radius:12px;box-shadow:0 3px 0 var(--ink)}
+input[type=datetime-local],input[type=time],input[type=text],input[type=number],select{border:2px solid var(--ink);border-radius:12px;padding:10px 12px;background:#FFFDF8;font-weight:700;width:100%;outline:none}
+.pick{margin-top:10px}
+
+/* abas */
+.tabs{display:flex;gap:6px;background:#fff;border:2px solid var(--ink);border-radius:16px;padding:5px;box-shadow:var(--sh);margin:4px 0 14px}
+.tabs button{flex:1;border:0;background:none;border-radius:11px;padding:9px 4px;font-weight:900;font-size:15px}
+.tabs button.on{background:var(--ink);color:#fff}
+.tabs .n{display:inline-block;min-width:20px;padding:0 6px;border-radius:99px;background:var(--soft);color:var(--ink);font-size:12px;margin-left:4px}
+
+/* lista */
+.grp{font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;color:var(--muted);margin:16px 4px 8px;text-transform:uppercase;letter-spacing:.6px}
+.grp.late{color:var(--coral-d)}
+.task{display:flex;gap:12px;align-items:center;background:#fff;border:2px solid var(--ink);border-radius:18px;padding:12px;margin-bottom:10px;box-shadow:0 3px 0 var(--ink);animation:slidein .25s ease-out}
+@keyframes slidein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.task .ckb{width:34px;height:34px;flex:0 0 34px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;display:grid;place-items:center;font-size:18px;color:#fff;padding:0}
+.task.done .ckb{background:var(--teal)}
+.task .body{flex:1;min-width:0;border:0;background:none;text-align:left;padding:0}
+.task .tx{font-weight:900;font-size:16.5px;line-height:1.25;word-break:break-word}
+.task.done .tx{text-decoration:line-through;color:var(--muted)}
+.task .meta{font-size:13px;font-weight:800;color:var(--muted);margin-top:4px;display:flex;flex-wrap:wrap;gap:6px}
+.task .meta .late{color:var(--coral-d)}
+.task .meta .off{color:#9a8fb0}
+.task.late{background:#FFF1EC}
+.task .bell{width:40px;height:40px;flex:0 0 40px;border-radius:12px;border:2px solid var(--ink);background:var(--soft);font-size:18px;padding:0}
+.task .bell.on{background:var(--sun)}
+.empty{text-align:center;padding:26px 10px;color:var(--muted);font-weight:800}
+.empty .big{font-size:44px}
+
+/* folha (bottom sheet) */
+.backdrop{position:fixed;inset:0;background:rgba(43,35,64,.45);z-index:40;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--bg);border-top:2px solid var(--ink);border-radius:26px 26px 0 0;max-height:92vh;overflow:auto;padding:10px 18px calc(24px + var(--safe-b));animation:up .28s cubic-bezier(.2,1.2,.4,1)}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet .grab{width:52px;height:6px;border-radius:9px;background:#d8ccb8;margin:2px auto 10px}
+.sheet h2{margin:4px 0 12px;font-size:22px}
+.sheet h3{margin:18px 0 8px;font-size:16px}
+.sheet p{line-height:1.45;margin:6px 0}
+.sheet .inner{max-width:540px;margin:0 auto}
+.field{margin:12px 0}
+.field label{display:block;font-weight:900;font-size:14px;margin-bottom:6px}
+.row{display:flex;gap:10px;align-items:center}
+.row>*{flex:1}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:11px 12px;margin:8px 0;font-weight:800}
+.switch small{display:block;color:var(--muted);font-weight:700;font-size:12.5px}
+.tg{position:relative;width:52px;height:30px;flex:0 0 52px}
+.tg input{opacity:0;width:0;height:0}
+.tg span{position:absolute;inset:0;background:#d9cfbf;border:2px solid var(--ink);border-radius:99px;transition:.2s}
+.tg span:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border:2px solid var(--ink);border-radius:50%;transition:.2s;box-sizing:border-box}
+.tg input:checked+span{background:var(--teal)}
+.tg input:checked+span:before{transform:translateX(22px)}
+code.topic{display:block;background:#fff;border:2px dashed var(--ink);border-radius:12px;padding:10px;font-weight:800;font-size:15px;word-break:break-all;margin:6px 0}
+.steps{padding-left:20px}
+.steps li{margin:8px 0;line-height:1.4}
+.note{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:10px 12px;font-size:14px;margin:10px 0}
+.note.warn{background:#FFF1EC}
+.note.ok{background:#E1F7F3}
+.danger{color:var(--coral-d)}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.btnrow .btn{flex:1;min-width:130px}
+
+/* editor do avatar */
+.av-stage{display:flex;justify-content:center;background:#fff;border:2px solid var(--ink);border-radius:22px;box-shadow:var(--sh);padding:8px;margin-bottom:12px;position:sticky;top:-10px;z-index:2}
+.sheet a{color:var(--coral-d);font-weight:800}
+.sheet a.btn{color:var(--ink)}
+.av-stage svg{width:170px;height:212px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{border:2px solid var(--ink);background:#fff;border-radius:12px;padding:7px 11px;font-weight:800;font-size:14px}
+.opt.on{background:var(--ink);color:#fff}
+.sw{width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);padding:0}
+.sw.on{outline:3px solid var(--coral);outline-offset:2px}
+input[type=range]{width:100%;accent-color:var(--coral)}
+
+/* overlay do lembrete */
+.ov{position:fixed;inset:0;z-index:60;background:rgba(43,35,64,.62);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:calc(16px + var(--safe-t)) 16px calc(18px + var(--safe-b));animation:fade .2s}
+.ov-inner{width:100%;max-width:460px;display:flex;flex-direction:column;align-items:center}
+.ov-bubble{background:#fff;border:2.5px solid var(--ink);border-radius:26px;padding:16px 18px;box-shadow:0 5px 0 var(--ink);width:100%;position:relative;animation:pop .45s .15s both cubic-bezier(.3,1.6,.5,1)}
+.ov-bubble:after{content:"";position:absolute;bottom:-13px;left:50%;margin-left:-11px;width:22px;height:22px;background:#fff;border-right:2.5px solid var(--ink);border-bottom:2.5px solid var(--ink);transform:rotate(45deg)}
+.ov-kicker{font-family:Fredoka,sans-serif;font-weight:700;color:var(--coral-d);font-size:17px}
+.ov-text{font-family:Fredoka,sans-serif;font-weight:700;font-size:27px;line-height:1.15;margin:4px 0 6px;word-break:break-word}
+.ov-meta{font-size:13.5px;font-weight:800;color:var(--muted)}
+.ov-count{position:absolute;top:10px;right:14px;font-size:12px;font-weight:900;background:var(--soft);border-radius:99px;padding:2px 8px}
+.ov-av{width:210px;height:262px;margin-top:6px;animation:rise .6s cubic-bezier(.2,1.4,.4,1)}
+.ov-av svg{width:100%;height:100%;overflow:visible}
+@keyframes rise{from{transform:translateY(120%)}to{transform:none}}
+.ov-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:-10px;position:relative;z-index:2}
+.ov-actions .btn{padding:14px 10px;font-size:16px}
+.ov-actions .wide{grid-column:1/-1;font-size:19px;padding:16px}
+.shake{animation:shake .5s}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-8px) rotate(-2deg)}40%{transform:translateX(8px) rotate(2deg)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+
+/* voz */
+.voice{position:fixed;inset:0;z-index:55;background:rgba(43,35,64,.62);display:flex;align-items:flex-end;justify-content:center;padding:16px 16px calc(18px + var(--safe-b));animation:fade .2s}
+.voice-card{width:100%;max-width:460px;background:var(--bg);border:2.5px solid var(--ink);border-radius:28px;box-shadow:0 5px 0 var(--ink);padding:18px;text-align:center;animation:up .3s cubic-bezier(.2,1.2,.4,1)}
+.voice-av{width:150px;height:186px;margin:0 auto;position:relative}
+.voice-av svg{width:100%;height:100%;overflow:visible}
+.voice-av .ring{position:absolute;left:50%;top:44%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:4px solid var(--coral);opacity:0;pointer-events:none}
+.voice.listening .ring{animation:ring 1.4s infinite}
+.voice.listening .ring.b{animation-delay:.7s}
+@keyframes ring{0%{transform:scale(.8);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+.voice-q{font-family:Fredoka,sans-serif;font-weight:700;font-size:21px;margin-top:14px}
+.voice-t{min-height:48px;margin:10px 0;font-weight:800;font-size:18px;color:var(--ink);background:#fff;border:2px dashed #cfc3ae;border-radius:16px;padding:10px}
+.voice-t.dim{color:var(--muted)}
+.voice-btns{display:flex;gap:10px}
+.voice-btns .btn{flex:1}
+
+.toast{position:fixed;left:50%;bottom:calc(18px + var(--safe-b));transform:translateX(-50%);z-index:70;background:var(--ink);color:#fff;border-radius:16px;padding:12px 14px;font-weight:800;display:flex;gap:12px;align-items:center;max-width:92vw;box-shadow:0 6px 18px rgba(0,0,0,.25);animation:up .25s}
+.toast button{background:var(--sun);color:var(--ink);border:0;border-radius:10px;padding:6px 10px;font-weight:900}
+
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:80;overflow:hidden}
+.confetti i{position:absolute;top:-20px;width:10px;height:14px;border-radius:2px;animation:fall 2.2s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+
+/* avatar animações */
+.av .av-head{transform-box:view-box;transform-origin:100px 182px;animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:rotate(-2.5deg)}50%{transform:rotate(2.5deg) translateY(-2px)}}
+.av .eyes{transform-box:view-box;transform-origin:100px 98px;animation:blink 4.6s infinite}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.08)}}
+.av .mouth-talk{transform-box:view-box;transform-origin:100px 142px;animation:talk .2s infinite alternate}
+@keyframes talk{from{transform:scaleY(.25)}to{transform:scaleY(1.1)}}
+.av .arm{transform-box:view-box;transition:transform .35s cubic-bezier(.3,1.5,.5,1)}
+.av .arm-l{transform-origin:66px 206px}
+.av .arm-r{transform-origin:134px 206px}
+.av.m-party .arm-l{transform:rotate(140deg)}
+.av.m-party .arm-r{transform:rotate(-140deg)}
+.av.m-party .av-head{animation:party .5s ease-in-out infinite alternate}
+@keyframes party{from{transform:rotate(-7deg) translateY(-2px)}to{transform:rotate(7deg) translateY(-6px)}}
+.av.m-alert .arm-r,.av.m-angry .arm-r{animation:wave .45s ease-in-out infinite alternate}
+@keyframes wave{from{transform:rotate(-155deg)}to{transform:rotate(-115deg)}}
+.av.m-angry .av-head{animation:shakehead .35s ease-in-out infinite alternate}
+@keyframes shakehead{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+.av.m-listen .arm-r{transform:rotate(-120deg)}
+.av.m-sleep .av-head{animation:bob 6s ease-in-out infinite}
+.av.m-sleep .eyes{animation:none}
+.av .stk{animation:float 2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.av .parm{transform-box:view-box}
+.av .parm-l{transform-origin:47px 226px}
+.av .parm-r{transform-origin:153px 226px}
+.av.m-alert .parm-r,.av.m-talk .parm-r{animation:pwig .45s ease-in-out infinite alternate}
+.av.m-party .parm-l{animation:pwig .4s ease-in-out infinite alternate}
+.av.m-party .parm-r{animation:pwig .4s ease-in-out .2s infinite alternate}
+.av.m-angry .parm-l{animation:pdown .32s ease-in-out infinite alternate}
+.av.av-pereira.m-angry .av-head{animation:shakehead .6s ease-in-out infinite alternate}
+@keyframes pwig{from{transform:rotate(-9deg)}to{transform:rotate(9deg)}}
+@keyframes pdown{from{transform:translateY(-2px) rotate(-3deg)}to{transform:translateY(4px) rotate(3deg)}}
+@media (prefers-reduced-motion:reduce){.av *{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Lembra<span>Aí!</span></div>
+    <div class="top-actions">
+      <button class="iconbtn hidden" id="btnInstall" title="Instalar app" aria-label="Instalar app">📲</button>
+      <button class="iconbtn" id="btnSettings" title="Configurações" aria-label="Configurações">⚙️</button>
+    </div>
+  </header>
+  <div id="previewBanner" class="preview-banner hidden">👀 Isto é uma prévia. Aqui dentro do Claude a voz e as notificações ficam bloqueadas — no app instalado no celular tudo funciona.</div>
+
+  <section class="hero">
+    <button class="hero-av" id="heroAv" aria-label="Tocar para falar com o bonequinho"></button>
+    <div class="bubble" id="heroBubble"></div>
+  </section>
+
+  <div class="stats" id="stats"></div>
+  <section class="card setup hidden" id="setupCard"></section>
+
+  <section class="card">
+    <div class="comp-row">
+      <textarea id="inp" rows="1" placeholder="Ex.: me lembra de pagar a luz amanhã às 10h" enterkeyhint="done" aria-label="Escreva o lembrete"></textarea>
+      <button class="mic" id="mic" aria-label="Falar o lembrete">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.5" width="6" height="12" rx="3" fill="currentColor"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3.5"/></svg>
+      </button>
+    </div>
+    <div class="prev" id="prev"></div>
+    <div class="chips" id="whenChips"></div>
+    <div class="pick hidden" id="pickWrap"><input type="datetime-local" id="pickDt" aria-label="Escolher data e hora"></div>
+    <div class="comp-foot">
+      <button class="chip" id="repChip" title="Toque para mudar de quanto em quanto tempo avisar">🔁 a cada 1 h</button>
+      <button class="btn primary" id="addBtn">Lembrar ➜</button>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs">
+    <button data-tab="todo" class="on">A fazer<span class="n" id="nTodo">0</span></button>
+    <button data-tab="done">Feitas<span class="n" id="nDone">0</span></button>
+    <button data-tab="all">Todas</button>
+  </nav>
+  <section id="list"></section>
+</div>
+
+<div id="ov" class="ov hidden" role="dialog" aria-modal="true">
+  <div class="ov-inner">
+    <div class="ov-bubble">
+      <span class="ov-count hidden" id="ovCount"></span>
+      <div class="ov-kicker" id="ovKicker"></div>
+      <div class="ov-text" id="ovText"></div>
+      <div class="ov-meta" id="ovMeta"></div>
+    </div>
+    <div class="ov-av" id="ovAv"></div>
+    <div class="ov-actions">
+      <button class="btn teal wide" id="ovDone">✅ Feito!</button>
+      <button class="btn sun" id="ovLater">⏰ Me lembra depois</button>
+      <button class="btn" id="ovStop">🔕 Parar avisos</button>
+    </div>
+  </div>
+</div>
+
+<div id="voice" class="voice hidden" role="dialog" aria-modal="true">
+  <div class="voice-card">
+    <div class="voice-av"><div class="ring"></div><div class="ring b"></div><div id="voiceAv"></div></div>
+    <div class="voice-q" id="voiceQ">Fala que eu anoto! 🎧</div>
+    <div class="voice-t dim" id="voiceT">…</div>
+    <div class="voice-btns" id="voiceBtns"></div>
+  </div>
+</div>
+
+<div id="sheetHost"></div>
+<div id="toastHost"></div>
+<div class="confetti" id="confetti"></div>
+
+<script>
+(() => {
+'use strict';
+/* ============ utilidades ============ */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const MIN = 60000, HOUR = 3600000, DAY = 86400000;
+const KEY = 'lembraai.v1';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const BOT = () => (S && S.settings && S.settings.botName) || 'Pereira';
+const IN_FRAME = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+const PREVIEW = IN_FRAME || location.protocol === 'file:';
+const pad = (n) => String(n).padStart(2, '0');
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const cap1 = (s) => s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
+
+/* ============ estado ============ */
+function genTopic() {
+  const a = new Uint8Array(10); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i) => a[i] = Math.random() * 256);
+  return 'lembraai-' + [...a].map((b) => (b % 36).toString(36)).join('');
+}
+function PEREIRA() { return { mode: 'draw', style: 'pereira', skin: 2, hairColor: 0, shirt: 8, face: 'round', hair: 'curto', beard: 'full', glasses: 'none', brows: 'thick', nose: 'normal', ears: 'normal', cap: false, photo: null, pz: 1, px: 0, py: 0 }; }
+function defaults() {
+  return {
+    v: 2, tasks: [], avatarDone: true, setupHidden: false, installed: false,
+    settings: {
+      name: 'Maiquel', botName: 'Pereira', every: 60,
+      quiet: { on: true, from: '23:00', to: '07:00' },
+      sound: true, vibrate: true, speak: true, strong: true,
+      ntfy: { on: false, server: 'https://ntfy.sh', topic: genTopic(), ahead: 12, ok: 0, err: '', ctlSince: 0, sent: 0, day: '' }
+    },
+    avatar: PEREIRA(),
+    _oldAvatar: { mode: 'draw', skin: 1, face: 'round', hair: 'curto', hairColor: 0, beard: 'stubble', glasses: 'none', brows: 'normal', nose: 'normal', ears: 'normal', cap: false, shirt: 0, photo: null, pz: 1, px: 0, py: 0 }
+  };
+}
+function deepMerge(base, add) {
+  if (!add || typeof add !== 'object') return base;
+  for (const k of Object.keys(add)) {
+    if (add[k] && typeof add[k] === 'object' && !Array.isArray(add[k]) && base[k] && typeof base[k] === 'object' && !Array.isArray(base[k])) deepMerge(base[k], add[k]);
+    else base[k] = add[k];
+  }
+  return base;
+}
+let S;
+function load() {
+  let raw = null;
+  try { raw = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { raw = null; }
+  S = deepMerge(defaults(), raw || {});
+  delete S._oldAvatar;
+  if (raw && (raw.v || 1) < 2) { // atualização: o bonequinho agora é o Pereira
+    S.avatar = PEREIRA(); S.avatarDone = true; S.settings.botName = S.settings.botName || 'Pereira'; S.v = 2;
+  }
+}
+let saveTimer = null;
+function save() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 120);
+}
+function saveNow() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch (e) { toast('⚠️ Não consegui salvar (memória cheia?). Tente uma foto menor no bonequinho.'); }
+}
+load();
+
+/* ============ datas ============ */
+function sameDay(a, b) { return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate(); }
+function dayDiff(ts) { const a = new Date(); a.setHours(0, 0, 0, 0); const b = new Date(ts); b.setHours(0, 0, 0, 0); return Math.round((b - a) / DAY); }
+const WDN = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sáb'];
+const WDL = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+function hm(ts) { const d = new Date(ts); return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function fmtWhen(ts) {
+  const d = new Date(ts), dd = dayDiff(ts);
+  const diff = ts - Date.now();
+  if (diff > 0 && diff < 55 * MIN) return 'em ' + Math.max(1, Math.round(diff / MIN)) + ' min (' + hm(ts) + ')';
+  if (dd === 0) return 'hoje ' + hm(ts);
+  if (dd === 1) return 'amanhã ' + hm(ts);
+  if (dd === -1) return 'ontem ' + hm(ts);
+  if (dd > 1 && dd < 7) return WDN[d.getDay()] + ' ' + hm(ts);
+  return pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + ' ' + hm(ts);
+}
+function fmtAt(ts, ref) { // horário absoluto em relação ao momento "ref" (pra textos que chegam depois)
+  const a = new Date(ts), b = new Date(ref);
+  if (sameDay(a, b)) return 'às ' + hm(ts);
+  const y = new Date(b); y.setDate(y.getDate() - 1);
+  if (sameDay(a, y)) return 'ontem às ' + hm(ts);
+  return pad(a.getDate()) + '/' + pad(a.getMonth() + 1) + ' às ' + hm(ts);
+}
+const ceilMin = (ts) => Math.ceil(ts / MIN) * MIN;
+function spokenWhen(ts) {
+  const d = new Date(ts), dd = dayDiff(ts);
+  const h = d.getHours(), m = d.getMinutes();
+  const hs = h === 12 && m === 0 ? 'ao meio-dia' : h === 0 && m === 0 ? 'à meia-noite' : (h === 1 ? 'à 1' : 'às ' + h) + (m ? ' e ' + m : ' horas');
+  const diff = ts - Date.now();
+  if (diff > 0 && diff < 55 * MIN) return 'daqui a ' + Math.max(1, Math.round(diff / MIN)) + ' minutos';
+  if (dd === 0) return 'hoje ' + hs;
+  if (dd === 1) return 'amanhã ' + hs;
+  if (dd > 1 && dd < 7) return WDL[d.getDay()] + ' ' + hs;
+  return 'dia ' + d.getDate() + ' ' + hs;
+}
+function fmtEvery(m) {
+  if (!m) return 'sem repetir';
+  if (m < 60) return 'a cada ' + m + ' min';
+  if (m % 60 === 0) return 'a cada ' + (m / 60) + ' h';
+  return 'a cada ' + Math.floor(m / 60) + 'h' + pad(m % 60);
+}
+const RECUR = { none: 'Não repetir', daily: 'Todo dia', weekdays: 'Dias úteis (seg–sex)', weekly: 'Toda semana' };
+const RECUR_SHORT = { daily: 'todo dia', weekdays: 'dias úteis', weekly: 'toda semana' };
+function toLocalInput(ts) { const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) + 'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function fromLocalInput(v) { if (!v) return null; const t = new Date(v).getTime(); return isNaN(t) ? null : t; }
+function atDay(off, h, m = 0) { const d = new Date(); d.setDate(d.getDate() + off); d.setHours(h, m, 0, 0); return d.getTime(); }
+
+/* ============ entendedor de linguagem natural (PT-BR) ============ */
+const NUMW = { um: 1, uma: 1, dois: 2, duas: 2, 'três': 3, tres: 3, quatro: 4, cinco: 5, seis: 6, sete: 7, oito: 8, nove: 9, dez: 10, onze: 11, doze: 12, treze: 13, quatorze: 14, catorze: 14, quinze: 15, dezesseis: 16, dezessete: 17, dezoito: 18, dezenove: 19, vinte: 20, trinta: 30, quarenta: 40, cinquenta: 50 };
+const NUM = '(\\d{1,3}|(?:vinte|trinta|quarenta|cinquenta) e (?:um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove)|um|uma|dois|duas|tr[eê]s|quatro|cinco|seis|sete|oito|nove|dez|onze|doze|treze|quatorze|catorze|quinze|dezesseis|dezessete|dezoito|dezenove|vinte|trinta|quarenta|cinquenta)';
+function toNum(s) {
+  if (s == null) return NaN; s = String(s).trim();
+  if (/^\d+$/.test(s)) return +s;
+  const m = s.match(/^(\S+) e (\S+)$/); if (m) return (NUMW[m[1]] || 0) + (NUMW[m[2]] || 0);
+  return NUMW[s] ?? NaN;
+}
+const B = '(?<![\\p{L}\\d])', E = '(?![\\p{L}\\d])';
+const WD = { domingo: 0, segunda: 1, 'terça': 2, terca: 2, quarta: 3, quinta: 4, sexta: 5, 'sábado': 6, sabado: 6 };
+const MES = { janeiro: 0, fevereiro: 1, 'março': 2, marco: 2, abril: 3, maio: 4, junho: 5, julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11 };
+const MESRE = '(janeiro|fevereiro|mar[çc]o|abril|maio|junho|julho|agosto|setembro|outubro|novembro|dezembro)';
+const WDRE = '(segunda|ter[çc]a|quarta|quinta|sexta|s[áa]bado|domingo)';
+const PERH = { 'manhã': 9, manha: 9, tarde: 15, noite: 20, madrugada: 6, cedo: 8 };
+const PER = '(?:\\s+(?:da|de|pela|à|a|na)\\s+(manh[ãa]|tarde|noite|madrugada))?';
+
+function parseTask(input, nowArg) {
+  const now = nowArg ? new Date(nowArg) : new Date();
+  let orig = ' ' + String(input || '').replace(/\s+/g, ' ').trim() + ' ';
+  let low = orig.toLowerCase();
+  if (low.length !== orig.length) orig = low;
+  const r = { dayOff: null, date: null, wd: null, wdFromRecur: false, h: null, m: 0, period: null, hasPrefix: false, rel: null, every: null, recur: null };
+  function take(src, fn) {
+    const re = new RegExp(src, 'iu');
+    const m = re.exec(low);
+    if (!m || !m[0].length) return false;
+    if (fn && fn(m) === false) return false;
+    const a = m.index, b = a + m[0].length;
+    low = low.slice(0, a) + ' '.repeat(b - a) + low.slice(b);
+    orig = orig.slice(0, a) + ' '.repeat(b - a) + orig.slice(b);
+    return true;
+  }
+  // gatilhos tipo "ei bonequinho, me lembra de..."
+  const botRe = BOT().toLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  take('^\\s*(?:(?:ei|oi|ô|ó|ok|olá|ola|hey|alô|alo)\\s*[,!]?\\s+)?(?:(?:bonequinho|boneco|lembra[ -]a[ií]|' + botRe + ')\\s*[,!]?\\s*)');
+  take('^\\s*(?:(?:ei|oi|ô|ok|olá|ola)\\s*[,!]?\\s+)');
+  take('^\\s*(?:por favor\\s*,?\\s*)?(?:(?:me|nos)\\s+)?(?:lembr(?:a|e|ar|ete)|recorda|avis(?:a|e|ar))(?:\\s*-\\s*me|\\s+me)?(?:\\s+(?:de|que|para|pra|da|do|sobre))?' + E);
+  take('^\\s*n[ãa]o\\s+(?:me\\s+)?deix[ae]\\s+(?:eu\\s+)?esquecer(?:\\s+(?:de|que|do|da))?' + E);
+  take('^\\s*(?:anot(?:a|e|ar)|cri(?:a|e|ar)|adicion(?:a|e|ar)|registr(?:a|e|ar)|coloc(?:a|e|ar)|bot(?:a|ar))(?:\\s+a[ií])?(?:\\s+(?:um|uma|o|a))?(?:\\s+(?:lembrete|tarefa|aviso|alarme))?(?:\\s+(?:de|para|pra|que))?' + E);
+  take('^\\s*(?:lembrete|tarefa|aviso)\\s*(?:de|para|pra|:)?' + E);
+  take('^\\s*(?:eu\\s+)?(?:preciso|tenho que|tenho de)(?:\\s+de)?' + E);
+
+  // repetir a tarefa
+  take(B + '(?:todos os dias|todo dia|todo santo dia|diariamente)' + E, () => { r.recur = 'daily'; });
+  take(B + '(?:(?:nos |em )?dias [úu]teis|de segunda a sexta(?:[ -]feira)?)' + E, () => { r.recur = 'weekdays'; });
+  take(B + '(?:toda|todas as|todo|todos os)\\s+' + WDRE + 's?(?:[ -]feiras?)?' + E, (m) => { r.recur = 'weekly'; r.wd = WD[m[1]]; r.wdFromRecur = true; });
+  take(B + '(?:toda semana|semanalmente|toda a semana)' + E, () => { r.recur = 'weekly'; });
+
+  // de quanto em quanto tempo insistir
+  take('(?:,\\s*)?' + B + '(?:(?:e\\s+)?(?:me\\s+)?(?:avis(?:a|e|ar|ando)|lembr(?:a|e|ar|ando)|repet(?:e|ir|indo)|insist(?:e|ir|indo))\\s+)?(?:de\\s+)?a cada\\s+(?:' + NUM + '\\s*)?(meia hora|minutos?|mins?|horas?|hrs?|h)' + E, (m) => {
+    const u = m[2]; const n = m[1] ? toNum(m[1]) : 1;
+    const mins = /meia/.test(u) ? 30 : /^h/.test(u) ? n * 60 : n;
+    if (!(mins >= 5 && mins <= 1440)) return false;
+    r.every = mins;
+  });
+  take(B + '(?:de )?(?:hora em hora|1 em 1 hora)' + E, () => { r.every = 60; });
+  take(B + '(?:de )?meia em meia hora' + E, () => { r.every = 30; });
+  take(B + '(?:sem repetir|s[óo] uma vez|uma vez s[óo]|n[ãa]o (?:precisa )?(?:repetir|insistir))' + E, () => { r.every = 0; });
+
+  // relativo: "daqui a 30 minutos", "em 2 horas"
+  take(B + 'daqui (?:a |há )?(?:um )?(?:pouco|pouquinho)' + E, () => { r.rel = 30; });
+  take(B + 'mais tarde' + E, () => { if (r.rel == null) r.rel = 120; });
+  take(B + '(?:daqui a|daqui|em|dentro de|depois de)\\s+(?:' + NUM + '\\s*)?(meia hora|minutos?|mins?|horas?|hrs?|h|dias?|semanas?)(?:\\s+e\\s+(meia|' + NUM + '\\s*(?:minutos?|mins?)?))?' + E, (m) => {
+    const u = m[2];
+    if (!m[1] && !/meia/.test(u)) return false;
+    const n = m[1] ? toNum(m[1]) : 1;
+    if (isNaN(n)) return false;
+    let mins = /meia/.test(u) ? 30 : /^min/.test(u) ? n : /^(h|hora|hr)/.test(u) ? n * 60 : /^dia/.test(u) ? n * 1440 : n * 10080;
+    if (m[3]) mins += /meia/.test(m[3]) ? 30 : (toNum(m[4]) || 0);
+    r.rel = mins;
+  });
+
+  // dia
+  take(B + 'depois de amanh[ãa]' + E, () => { r.dayOff = 2; });
+  take(B + 'amanh[ãa]' + E, () => { r.dayOff = 1; });
+  take(B + 'hoje' + E, () => { r.dayOff = 0; });
+  const wdSet = (m) => { if (r.wd != null) return false; r.wd = WD[m[1]]; };
+  take(B + '(?:na|no|nesta|neste|nessa|nesse|esta|este|essa|esse|pr[óo]xim[ao]|n[ao] pr[óo]xim[ao]|at[ée])\\s+' + WDRE + '(?:[ -]feira)?(?:\\s+que vem)?' + E, wdSet) ||
+  take(B + WDRE + '[ -]feira(?:\\s+que vem)?' + E, wdSet) ||
+  take(B + WDRE + '(?:\\s+que vem)?(?=\\s*(?:$|[àa]s\\s|\\d|de manh|de tarde|de noite|[àa] tarde|[àa] noite|pela|cedo|ao meio))', wdSet);
+  take(B + '(?:no\\s+)?dia\\s+(\\d{1,2})(?:\\s+de\\s+' + MESRE + ')?' + E, (m) => { const d = +m[1]; if (d < 1 || d > 31) return false; r.date = { d, mo: m[2] ? MES[m[2]] : null }; });
+  if (!r.date) take(B + '(\\d{1,2})\\s+de\\s+' + MESRE + E, (m) => { r.date = { d: +m[1], mo: MES[m[2]] }; });
+  if (!r.date) take(B + '(\\d{1,2})/(\\d{1,2})(?:/(\\d{2,4}))?' + E, (m) => {
+    const d = +m[1], mo = +m[2] - 1; if (d < 1 || d > 31 || mo < 0 || mo > 11) return false;
+    r.date = { d, mo, y: m[3] ? (+m[3] < 100 ? 2000 + +m[3] : +m[3]) : null };
+  });
+
+  // hora
+  take(B + '(?:(?:ao|à|a|pelo|por volta do|l[áa] pelo)\\s+)?meio[ -]dia(?:\\s+e\\s+(meia|\\d{1,2}))?' + E, (m) => { r.h = 12; r.m = m[1] ? (m[1] === 'meia' ? 30 : +m[1]) : 0; r.period = 'x'; });
+  if (r.h == null) take(B + '(?:(?:à|a|na|pela)\\s+)?meia[ -]noite(?:\\s+e\\s+(meia|\\d{1,2}))?' + E, (m) => { r.h = 0; r.m = m[1] ? (m[1] === 'meia' ? 30 : +m[1]) : 0; r.period = 'x'; });
+  if (r.h == null) take(B + '([àa]s|à|pelas|por volta das?|l[áa] pelas|at[ée] [àa]s|para as|pras|a partir das)\\s+' + NUM + '(?:\\s*(horas?|hrs?|h|:)\\s*(\\d{2})?)?(?:\\s+e\\s+(meia|\\d{1,2})(?:\\s*min(?:utos)?)?)?(?:\\s*(?:horas?|hrs?|h))?' + PER + E, (m) => {
+    const h = toNum(m[2]); if (!(h >= 0 && h <= 23)) return false;
+    const signal = m[3] || m[4] || m[5] || m[6];
+    if (m[1] === 'as' && !signal) return false; // "comprar as 3 camisas"
+    const mm = m[4] ? +m[4] : (m[5] ? (m[5] === 'meia' ? 30 : +m[5]) : 0);
+    if (mm > 59) return false;
+    r.h = h; r.m = mm; r.hasPrefix = true; if (m[6]) r.period = m[6];
+  });
+  if (r.h == null) take(B + '(\\d{1,2})\\s*(horas?|hrs?|h|:)\\s*(\\d{2})?(?:\\s*min(?:utos)?)?(?:\\s+e\\s+(meia|\\d{1,2})(?:\\s*min(?:utos)?)?)?' + PER + E, (m) => {
+    const h = +m[1]; if (h > 23) return false;
+    if (/^(hora|hr)/.test(m[2]) && !m[5] && !m[3] && !m[4]) return false; // "estudar 2 horas" = duração
+    const mm = m[3] ? +m[3] : (m[4] ? (m[4] === 'meia' ? 30 : +m[4]) : 0);
+    if (mm > 59) return false;
+    r.h = h; r.m = mm; if (m[5]) r.period = m[5];
+  });
+  if (r.h == null) take(B + NUM + '(?:\\s+e\\s+(meia|\\d{1,2}))?\\s+(?:da|de)\\s+(manh[ãa]|tarde|noite|madrugada)' + E, (m) => {
+    const h = toNum(m[1]); if (!(h >= 0 && h <= 12)) return false;
+    r.h = h; r.m = m[2] ? (m[2] === 'meia' ? 30 : +m[2]) : 0; r.period = m[3];
+  });
+  if (r.h == null) {
+    take(B + '(?:hoje\\s+)?(?:de|pela|[àa]|na|logo de)\\s+(manh[ãa]|tarde|noite|madrugada)(?:zinha)?' + E, (m) => { r.period = m[1]; }) ||
+    take(B + '(?:bem\\s+)?(cedo|cedinho)' + E, () => { r.period = 'cedo'; });
+  }
+
+  // monta a data final
+  let due = null;
+  if (r.rel != null) {
+    due = new Date(now.getTime() + r.rel * MIN);
+  } else {
+    const base = new Date(now); base.setSeconds(0, 0);
+    let explicitDay = false;
+    if (r.date) {
+      explicitDay = true;
+      base.setDate(1);
+      if (r.date.y) base.setFullYear(r.date.y);
+      if (r.date.mo != null) base.setMonth(r.date.mo);
+      base.setDate(Math.min(r.date.d, new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate()));
+      const today0 = new Date(now); today0.setHours(0, 0, 0, 0);
+      const b0 = new Date(base); b0.setHours(0, 0, 0, 0);
+      if (b0 < today0 && !r.date.y) {
+        if (r.date.mo == null) { base.setDate(1); base.setMonth(base.getMonth() + 1); base.setDate(Math.min(r.date.d, new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate())); }
+        else base.setFullYear(base.getFullYear() + 1);
+      }
+    } else if (r.dayOff != null) {
+      base.setDate(base.getDate() + r.dayOff);
+      explicitDay = r.dayOff > 0;
+    } else if (r.wd != null) {
+      explicitDay = true;
+      let diff = (r.wd - base.getDay() + 7) % 7;
+      if (diff === 0 && !r.wdFromRecur) diff = 7;
+      base.setDate(base.getDate() + diff);
+    }
+    let hasTime = false;
+    if (r.h != null) {
+      hasTime = true;
+      let h = r.h; const p = r.period;
+      if (p && /tarde|noite/.test(p) && h < 12) h += 12;
+      if (p && /manh|madrug/.test(p) && h === 12) h = 0;
+      if (!p && h >= 1 && h <= 5) h += 12; // ninguém marca lembrete às 3 da madrugada
+      base.setHours(h, r.m, 0, 0);
+      if (!p && !explicitDay && h < 12 && base <= now) { const alt = new Date(base); alt.setHours(h + 12); if (alt > now) base.setHours(h + 12); }
+      if (!explicitDay && r.dayOff == null && base <= now) base.setDate(base.getDate() + 1);
+    } else if (r.period) {
+      hasTime = true;
+      base.setHours(PERH[r.period] ?? 9, 0, 0, 0);
+      if (!explicitDay && base <= now) {
+        if (r.dayOff === 0) { base.setTime(now.getTime() + 30 * MIN); }
+        else base.setDate(base.getDate() + 1);
+      }
+    } else if (explicitDay || r.dayOff === 0 || r.recur) {
+      hasTime = true;
+      if (r.dayOff === 0 && !explicitDay) base.setTime(now.getTime() + HOUR);
+      else { base.setHours(9, 0, 0, 0); if (base <= now) base.setDate(base.getDate() + 1); }
+    }
+    if (r.recur === 'weekdays' && hasTime) { while (base.getDay() === 0 || base.getDay() === 6) base.setDate(base.getDate() + 1); }
+    if (r.recur && r.wdFromRecur && hasTime && base <= now) base.setDate(base.getDate() + 7);
+    due = hasTime ? base : null;
+  }
+
+  // limpa o texto
+  let text = orig.replace(/\s+/g, ' ').replace(/\s+([,.;:!?])/g, '$1').trim();
+  const LEAD = /^(?:[,.;:!?\-–]+|e|de|do|da|que|pra|para|pro|no|na|às|as|a|o|em|me|lembrar|lembra|lembrete|sobre|tipo)(?:\s+|$)/i;
+  const TRAIL = /(?:\s+|^)(?:[,.;:!\-–]+|e|de|do|da|que|pra|para|no|na|nas|nos|às|as|a|o|em|ao|até|pelas|lá|hoje|depois|por volta|tá|ta|ok)$/i;
+  for (let i = 0; i < 6; i++) { const t0 = text; text = text.replace(LEAD, '').replace(TRAIL, '').replace(/[,;:\-–]+$/, '').trim(); if (t0 === text) break; }
+  text = cap1(text);
+  return { text, due: due ? due.getTime() : null, every: r.every, recur: r.recur };
+}
+window.parseTask = parseTask; // para testes
+
+/* ============ horário de silêncio & lógica de avisos ============ */
+function mins(hhmm) { const [h, m] = String(hhmm || '0:0').split(':').map(Number); return (h || 0) * 60 + (m || 0); }
+function inQuiet(ts) {
+  const q = S.settings.quiet; if (!q.on) return false;
+  const d = new Date(ts); const x = d.getHours() * 60 + d.getMinutes();
+  const a = mins(q.from), b = mins(q.to);
+  if (a === b) return false;
+  return a < b ? (x >= a && x < b) : (x >= a || x < b);
+}
+function isActive(t) { return !t.deleted && !t.done && t.alarm; }
+function slotsBetween(t, from, to, max) {
+  const out = []; const a = t.anchor; const e = (t.every || 0) * MIN;
+  if (!e) { if (a >= from && a <= to) out.push(a); return out; }
+  let k = Math.max(0, Math.ceil((from - a) / e));
+  for (let i = 0; i < 2000 && out.length < max; i++, k++) {
+    const s = a + k * e; if (s > to) break;
+    if (k === 0 && t.anchor === t.dueAt) { out.push(s); continue; }
+    if (inQuiet(s)) continue;
+    out.push(s);
+  }
+  return out;
+}
+function lastSlotUpTo(t, now) {
+  const a = t.anchor; const e = (t.every || 0) * MIN;
+  if (now < a) return null;
+  if (!e) return a;
+  for (let k = Math.floor((now - a) / e), i = 0; k >= 0 && i < 2000; k--, i++) {
+    const s = a + k * e;
+    if ((k === 0 && t.anchor === t.dueAt) || !inQuiet(s)) return s;
+  }
+  return null;
+}
+function nextSlot(t, from) { const s = slotsBetween(t, from, from + 30 * DAY, 1); return s[0] ?? null; }
+function ordinal(t, s) { const e = (t.every || 0) * MIN; const idx = e ? Math.round((s - t.anchor) / e) : 0; return (t.ordBase || 0) + idx + 1; }
+
+/* ============ tarefas ============ */
+function newTask({ text, due, every, recur }) {
+  return { id: uid(), text, created: Date.now(), dueAt: due, anchor: due, every: every ?? S.settings.every, recur: recur || 'none', alarm: true, done: false, doneAt: null, ack: 0, shown: 0, notified: 0, ordBase: 0, nt: [], deleted: false };
+}
+function getTask(id) { return S.tasks.find((t) => t.id === id && !t.deleted); }
+function setDue(t, ts) { t.dueAt = ts; t.anchor = ts; t.ack = 0; t.shown = 0; t.notified = 0; t.ordBase = 0; }
+function nextRecurrence(t) {
+  if (!t.recur || t.recur === 'none') return null;
+  let d = new Date(t.dueAt); const now = Date.now();
+  for (let i = 0; i < 400; i++) {
+    if (t.recur === 'weekly') d.setDate(d.getDate() + 7);
+    else d.setDate(d.getDate() + 1);
+    if (t.recur === 'weekdays' && (d.getDay() === 0 || d.getDay() === 6)) continue;
+    if (d.getTime() > now) break;
+  }
+  return d.getTime();
+}
+function markDone(t, opts = {}) {
+  if (!t || t.done) return;
+  t.done = true; t.doneAt = Date.now(); t.ack = Date.now();
+  const nx = nextRecurrence(t);
+  if (nx) { const c = newTask({ text: t.text, due: nx, every: t.every, recur: t.recur }); S.tasks.push(c); }
+  save(); render(); ntfySync();
+  if (!opts.quiet) {
+    celebrate();
+    const frases = ['Mandou bem! 🎉', 'Boa, ' + S.settings.name + '! Uma a menos 💪', 'Isso aí! Riscado da lista ✅', 'Show! Tô orgulhoso 😎', 'Feito é melhor que perfeito! ✨'];
+    say(frases[Math.floor(Math.random() * frases.length)], 'party', 4500, true);
+    if (nx) setTimeout(() => toast('♻️ Próxima vez já agendada: ' + fmtWhen(nx)), 600);
+  }
+}
+function undoDone(t) { if (!t) return; t.done = false; t.doneAt = null; if (t.dueAt < Date.now()) { t.ack = Date.now(); } save(); render(); ntfySync(); }
+function muteTask(t, opts = {}) {
+  if (!t) return; t.alarm = false; t.ack = Date.now(); save(); render(); ntfySync();
+  if (!opts.quiet) say('Beleza, parei de avisar. A tarefa continua na lista 👍', 'normal', 4000, true);
+}
+function unmuteTask(t) {
+  if (!t) return; t.alarm = true;
+  if (t.dueAt < Date.now()) { const nx = ceilMin(Date.now() + (t.every || 60) * MIN); t.anchor = nx; t.ordBase = 0; }
+  t.ack = Date.now(); t.shown = 0;
+  save(); render(); ntfySync();
+  toast('🔔 Aviso religado: ' + fmtWhen(nextSlot(t, Date.now()) || t.anchor));
+}
+function snooze(t, minutes) {
+  if (!t) return;
+  const s = t.shown || lastSlotUpTo(t, Date.now()) || t.anchor;
+  t.ordBase = ordinal(t, s);
+  t.anchor = ceilMin(Date.now() + minutes * MIN); t.ack = Date.now(); t.alarm = true;
+  save(); render(); ntfySync();
+}
+function deleteTask(t) { if (!t) return; t.deleted = true; t.alarm = false; save(); render(); ntfySync(); }
+function addTask(data) {
+  const t = newTask(data); S.tasks.push(t); save(); render(); ntfySync();
+  return t;
+}
+
+/* ============ bonequinho (avatar) ============ */
+const SKINS = ['#FFE0C7', '#F6C6A0', '#E3A57A', '#C68642', '#8D5524', '#5C3A21'];
+const HAIRC = ['#1E1B18', '#4A2F1B', '#8B5A2B', '#D9A441', '#B5451B', '#9E9E9E', '#ECECEC'];
+const SHIRTS = ['#FF6B4A', '#12B5A5', '#3B82F6', '#8B7CF6', '#FFC93C', '#2B2340', '#22C55E', '#EC4899', '#1F2B4F'];
+function shade(hex, f) {
+  const n = parseInt(hex.slice(1), 16); let r = n >> 16, g = (n >> 8) & 255, b = n & 255;
+  if (f < 0) { r *= 1 + f; g *= 1 + f; b *= 1 + f; } else { r += (255 - r) * f; g += (255 - g) * f; b += (255 - b) * f; }
+  return '#' + [r, g, b].map((x) => Math.round(Math.max(0, Math.min(255, x))).toString(16).padStart(2, '0')).join('');
+}
+let avSeq = 0;
+function avatarSVG(A, mood = 'normal') {
+  A = A || S.avatar; const id = 'a' + (++avSeq);
+  const skin = SKINS[A.skin] || SKINS[1], skinD = shade(skin, -0.16), skinDD = shade(skin, -0.35);
+  const hc = HAIRC[A.hairColor] || HAIRC[0], shirt = SHIRTS[A.shirt] || SHIRTS[0], shirtD = shade(shirt, -0.25);
+  const ink = '#2B2340';
+  const F = { round: { hw: 66, ry: 70, T: 28, chin: 168 }, oval: { hw: 58, ry: 76, T: 22, chin: 174 }, square: { hw: 64, ry: 68, T: 30, chin: 166 } }[A.face] || { hw: 66, ry: 70, T: 28, chin: 168 };
+  const cy = 98, L = 100 - F.hw, R = 100 + F.hw, T = F.T, chin = F.chin;
+  const photo = A.mode === 'photo' && A.photo;
+  if (!photo && A.style === 'pereira') return pereiraSVG(A, mood);
+  let s = `<svg viewBox="0 0 200 262" class="av m-${mood}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`;
+  // corpo
+  s += `<g class="av-body">
+    <rect x="89" y="${(photo ? 166 : chin) - 10}" width="22" height="36" rx="7" fill="${skinD}"/>
+    <g class="arm arm-l"><path d="M66 206 Q48 222 46 244" stroke="${shirt}" stroke-width="15" stroke-linecap="round" fill="none"/><path d="M66 206 Q48 222 46 244" stroke="${ink}" stroke-opacity=".12" stroke-width="15" stroke-linecap="round" fill="none" transform="translate(1.5 1.5)"/><circle cx="46" cy="246" r="8.5" fill="${skin}" stroke="${skinDD}" stroke-opacity=".4" stroke-width="1.5"/></g>
+    <g class="arm arm-r"><path d="M134 206 Q152 222 154 244" stroke="${shirt}" stroke-width="15" stroke-linecap="round" fill="none"/><circle cx="154" cy="246" r="8.5" fill="${skin}" stroke="${skinDD}" stroke-opacity=".4" stroke-width="1.5"/></g>
+    <path d="M54 262 Q55 200 100 192 Q145 200 146 262 Z" fill="${shirt}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M86 194 Q100 214 114 194" fill="${skinD}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M70 232 Q100 240 130 232" stroke="${shirtD}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
+  </g>`;
+  s += `<g class="av-head">`;
+  if (photo) {
+    const size = 160 * (A.pz || 1);
+    s += `<defs><clipPath id="${id}c"><ellipse cx="100" cy="96" rx="72" ry="76"/></clipPath></defs>
+      <ellipse cx="102" cy="100" rx="74" ry="78" fill="${ink}" opacity=".18"/>
+      <ellipse cx="100" cy="96" rx="72" ry="76" fill="${skin}"/>
+      <image href="${A.photo}" x="${100 - size / 2 + (A.px || 0)}" y="${96 - size / 2 + (A.py || 0)}" width="${size}" height="${size}" clip-path="url(#${id}c)" preserveAspectRatio="xMidYMid slice"/>
+      <ellipse cx="100" cy="96" rx="72" ry="76" fill="none" stroke="${ink}" stroke-width="3"/>`;
+    if (A.cap) s += capSVG(L, R, T - 6, shirt, shirtD, ink);
+  } else {
+    // cabelo de trás
+    if (A.hair === 'comprido') s += `<path d="M${L - 6} ${cy} Q${L - 14} ${T - 12} 100 ${T - 14} Q${R + 14} ${T - 12} ${R + 6} ${cy} L${R + 10} ${chin + 26} Q${R - 6} ${chin + 38} ${R - 16} ${chin + 4} L${L + 16} ${chin + 4} Q${L + 6} ${chin + 38} ${L - 10} ${chin + 26} Z" fill="${hc}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    if (A.hair === 'black') s += `<ellipse cx="100" cy="${T + 38}" rx="${F.hw + 32}" ry="78" fill="${hc}" stroke="${ink}" stroke-width="2.5"/>`;
+    // orelhas
+    const big = A.ears === 'abano';
+    const erx = big ? 16 : 9.5, ery = big ? 20 : 13.5, exl = big ? L - 1 : L + 3, exr = big ? R + 1 : R - 3;
+    s += `<ellipse cx="${exl}" cy="${cy + 6}" rx="${erx}" ry="${ery}" fill="${skin}" stroke="${ink}" stroke-width="2.5"/><path d="M${exl + 2} ${cy - 1} Q${exl - erx * .5} ${cy + 6} ${exl + 2} ${cy + 13}" stroke="${skinDD}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+    s += `<ellipse cx="${exr}" cy="${cy + 6}" rx="${erx}" ry="${ery}" fill="${skin}" stroke="${ink}" stroke-width="2.5"/><path d="M${exr - 2} ${cy - 1} Q${exr + erx * .5} ${cy + 6} ${exr - 2} ${cy + 13}" stroke="${skinDD}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+    // rosto
+    if (A.face === 'square') s += `<rect x="${L}" y="${T}" width="${F.hw * 2}" height="${chin - T}" rx="46" fill="${skin}" stroke="${ink}" stroke-width="3"/>`;
+    else s += `<ellipse cx="100" cy="${cy}" rx="${F.hw}" ry="${F.ry}" fill="${skin}" stroke="${ink}" stroke-width="3"/>`;
+    s += `<ellipse cx="${L + 26}" cy="${T + 30}" rx="14" ry="7" fill="#fff" opacity=".22" transform="rotate(-25 ${L + 26} ${T + 30})"/>`;
+    // bochechas
+    s += `<circle cx="${L + 24}" cy="${cy + 26}" r="10" fill="#FF6F6F" opacity=".25"/><circle cx="${R - 24}" cy="${cy + 26}" r="10" fill="#FF6F6F" opacity=".25"/>`;
+    // barba
+    const jaw = `M${L + 2} ${cy + 4} Q${L + 5} ${chin - 6} 100 ${chin + 3} Q${R - 5} ${chin - 6} ${R - 2} ${cy + 4} Q${R - 10} ${cy + 46} 100 ${cy + 50} Q${L + 10} ${cy + 46} ${L + 2} ${cy + 4} Z`;
+    if (A.beard === 'stubble') s += `<path d="${jaw}" fill="${hc}" opacity=".22"/>`;
+    if (A.beard === 'full') s += `<path d="${jaw}" fill="${hc}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>`;
+    if (A.beard === 'goatee') s += `<path d="M84 ${cy + 50} Q100 ${chin + 14} 116 ${cy + 50} Q100 ${cy + 58} 84 ${cy + 50} Z" fill="${hc}" stroke="${ink}" stroke-width="2"/>`;
+    // olhos
+    const ex1 = 76, ex2 = 124, ey = cy;
+    s += `<g class="eyes">`;
+    for (const ex of [ex1, ex2]) {
+      if (mood === 'happy' || mood === 'party') s += `<path d="M${ex - 11} ${ey + 3} Q${ex} ${ey - 11} ${ex + 11} ${ey + 3}" stroke="${ink}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`;
+      else if (mood === 'sleep') s += `<path d="M${ex - 10} ${ey} Q${ex} ${ey + 8} ${ex + 10} ${ey}" stroke="${ink}" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+      else {
+        const ry = mood === 'alert' ? 14 : 12.5, pr = mood === 'worried' ? 7 : mood === 'alert' ? 5 : 6.3;
+        s += `<ellipse cx="${ex}" cy="${ey}" rx="11.5" ry="${ry}" fill="#fff" stroke="${ink}" stroke-width="2.5"/><circle cx="${ex + 1.5}" cy="${ey + 1.5}" r="${pr}" fill="${ink}"/><circle cx="${ex + 3.8}" cy="${ey - 1.8}" r="2.2" fill="#fff"/>`;
+      }
+    }
+    s += `</g>`;
+    // sobrancelhas
+    const bw = A.brows === 'thick' ? 7.5 : 4.5, by = ey - 21, bc = A.hair === 'careca' && A.hairColor >= 5 ? shade(skin, -0.45) : hc;
+    let b1, b2;
+    if (mood === 'worried') { b1 = `M${ex1 - 12} ${by + 3} Q${ex1} ${by - 2} ${ex1 + 12} ${by - 7}`; b2 = `M${ex2 - 12} ${by - 7} Q${ex2} ${by - 2} ${ex2 + 12} ${by + 3}`; }
+    else if (mood === 'angry') { b1 = `M${ex1 - 12} ${by - 6} L${ex1 + 12} ${by + 3}`; b2 = `M${ex2 - 12} ${by + 3} L${ex2 + 12} ${by - 6}`; }
+    else { const up = (mood === 'happy' || mood === 'party' || mood === 'alert') ? -4 : 0; b1 = `M${ex1 - 12} ${by + up} Q${ex1} ${by - 7 + up} ${ex1 + 12} ${by + up}`; b2 = `M${ex2 - 12} ${by + up} Q${ex2} ${by - 7 + up} ${ex2 + 12} ${by + up}`; }
+    s += `<path d="${b1}" stroke="${bc}" stroke-width="${bw}" fill="none" stroke-linecap="round"/><path d="${b2}" stroke="${bc}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`;
+    // nariz
+    if (A.nose === 'big') s += `<ellipse cx="100" cy="${cy + 18}" rx="15" ry="12.5" fill="${skinD}" stroke="${ink}" stroke-width="2.5"/><ellipse cx="95" cy="${cy + 14}" rx="4" ry="3" fill="#fff" opacity=".35"/>`;
+    else s += `<path d="M100 ${cy + 6} Q93 ${cy + 20} 99 ${cy + 23} Q104 ${cy + 24} 108 ${cy + 21}" stroke="${skinDD}" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+    // boca
+    const my = cy + 40;
+    if (mood === 'talk' || mood === 'listen') s += `<g class="mouth-talk"><ellipse cx="100" cy="${my + 4}" rx="11" ry="8" fill="#7A2B2B" stroke="${ink}" stroke-width="2.5"/><ellipse cx="100" cy="${my + 8}" rx="6" ry="3" fill="#FF8C8C"/></g>`;
+    else if (mood === 'happy' || mood === 'party') s += `<path d="M78 ${my - 4} Q100 ${my + 26} 122 ${my - 4} Z" fill="#7A2B2B" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/><path d="M82 ${my - 3} Q100 ${my + 3} 118 ${my - 3} L117 ${my + 1} Q100 ${my + 6} 83 ${my + 1} Z" fill="#fff"/><ellipse cx="100" cy="${my + 12}" rx="8" ry="4" fill="#FF8C8C"/>`;
+    else if (mood === 'worried') s += `<path d="M87 ${my + 8} Q100 ${my} 113 ${my + 8}" stroke="#5A2A2A" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    else if (mood === 'alert') s += `<ellipse cx="100" cy="${my + 5}" rx="7.5" ry="9.5" fill="#7A2B2B" stroke="${ink}" stroke-width="2.5"/>`;
+    else if (mood === 'angry') s += `<path d="M86 ${my + 7} Q93 ${my + 2} 100 ${my + 6} Q107 ${my + 2} 114 ${my + 7}" stroke="#5A2A2A" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    else if (mood === 'sleep') s += `<path d="M92 ${my + 5} Q100 ${my + 8} 108 ${my + 5}" stroke="#5A2A2A" stroke-width="3.5" fill="none" stroke-linecap="round"/>`;
+    else s += `<path d="M83 ${my - 2} Q100 ${my + 14} 117 ${my - 2}" stroke="#5A2A2A" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+    // bigode
+    if (A.beard === 'mustache' || A.beard === 'goatee' || A.beard === 'full') s += `<path d="M78 ${cy + 33} Q89 ${cy + 24} 100 ${cy + 29} Q111 ${cy + 24} 122 ${cy + 33} Q112 ${cy + 39} 100 ${cy + 34} Q88 ${cy + 39} 78 ${cy + 33} Z" fill="${hc}" stroke="${ink}" stroke-width="2" stroke-linejoin="round"/>`;
+    // óculos
+    if (A.glasses === 'round') s += `<g fill="#fff" fill-opacity=".18" stroke="${ink}" stroke-width="3.8"><circle cx="${ex1}" cy="${ey}" r="17"/><circle cx="${ex2}" cy="${ey}" r="17"/></g><path d="M${ex1 + 17} ${ey - 2} Q100 ${ey - 9} ${ex2 - 17} ${ey - 2}" stroke="${ink}" stroke-width="3.5" fill="none"/><path d="M${ex1 - 17} ${ey - 3} L${L + 2} ${ey - 7} M${ex2 + 17} ${ey - 3} L${R - 2} ${ey - 7}" stroke="${ink}" stroke-width="3.5"/>`;
+    if (A.glasses === 'square') s += `<g fill="#fff" fill-opacity=".18" stroke="${ink}" stroke-width="3.8"><rect x="${ex1 - 18}" y="${ey - 13}" width="36" height="27" rx="7"/><rect x="${ex2 - 18}" y="${ey - 13}" width="36" height="27" rx="7"/></g><path d="M${ex1 + 18} ${ey - 3} Q100 ${ey - 9} ${ex2 - 18} ${ey - 3}" stroke="${ink}" stroke-width="3.5" fill="none"/><path d="M${ex1 - 18} ${ey - 5} L${L + 2} ${ey - 8} M${ex2 + 18} ${ey - 5} L${R - 2} ${ey - 8}" stroke="${ink}" stroke-width="3.5"/>`;
+    if (A.glasses === 'dark') s += `<g fill="#1B1830" stroke="${ink}" stroke-width="3.5"><rect x="${ex1 - 19}" y="${ey - 12}" width="38" height="25" rx="10"/><rect x="${ex2 - 19}" y="${ey - 12}" width="38" height="25" rx="10"/></g><path d="M${ex1 - 10} ${ey - 5} l8 0 M${ex2 - 10} ${ey - 5} l8 0" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round"/><path d="M${ex1 + 19} ${ey - 3} Q100 ${ey - 9} ${ex2 - 19} ${ey - 3}" stroke="${ink}" stroke-width="3.5" fill="none"/>`;
+    // cabelo da frente
+    s += hairFront(A.hair, L, R, T, cy, hc, ink, F);
+    if (A.cap) s += capSVG(L, R, T, shirt, shirtD, ink);
+  }
+  s += `</g>`;
+  // adesivos de humor
+  const stk = { alert: '⏰', angry: '💢', party: '🎉', sleep: '💤', worried: '💦', listen: '🎧', happy: photo ? '😄' : '' }[mood] || (photo && mood === 'talk' ? '💬' : '');
+  if (stk) s += `<text class="stk" x="166" y="44" font-size="30" text-anchor="middle">${stk}</text>`;
+  s += `</svg>`;
+  return s;
+}
+function pereiraSVG(A, mood) {
+  const skin = SKINS[A.skin ?? 2] || SKINS[2], skinD = shade(skin, -0.14), skinDD = shade(skin, -0.38);
+  const hc = HAIRC[A.hairColor ?? 0] || HAIRC[0], hcL = shade(hc, 0.28);
+  const polo = SHIRTS[A.shirt ?? 8] || SHIRTS[8], poloD = shade(polo, -0.32);
+  const gold = '#D9A845', ink = '#2B2340', lip = '#D08474';
+  const pose = { normal: ['down', 'hip'], happy: ['up', 'hip'], party: ['up', 'up'], alert: ['down', 'point'], talk: ['down', 'point'], worried: ['hip', 'hip'], angry: ['tdown', 'hip'], listen: ['down', 'hip'], sleep: ['down', 'down'] }[mood] || ['down', 'hip'];
+  const limb = (d) => `<path d="${d}" stroke="${ink}" stroke-width="15" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" stroke="${skin}" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const rr = (x, y, w, h, r) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${skin}" stroke="${ink}" stroke-width="2.5"/>`;
+  const knk = (x1, x2, ys) => `<path d="${ys.map((y) => `M${x1} ${y} L${x2} ${y}`).join(' ')}" stroke="${skinDD}" stroke-width="1.8" stroke-linecap="round"/>`;
+  const arm = (p) => {
+    if (p === 'hip') return limb('M47 226 Q24 240 34 252 Q40 258 54 253') + `<ellipse cx="57" cy="251" rx="8.5" ry="7" fill="${skin}" stroke="${ink}" stroke-width="2.5"/>`;
+    if (p === 'tdown') return limb('M47 226 Q32 234 19 235') + rr(1, 226, 19, 17, 6) + knk(10, 18, [232, 237]) + rr(3.5, 240, 7.5, 16, 3.7);
+    if (p === 'up') return limb('M47 226 Q28 220 22 203') + rr(12, 188, 19, 17, 6) + knk(14, 22, [194, 199]) + rr(15, 172, 7.5, 17, 3.7);
+    if (p === 'point') return limb('M47 226 Q28 220 22 203') + rr(12, 189, 18, 16, 6) + rr(15.5, 168, 7, 23, 3.5);
+    return limb('M47 226 Q42 242 44 252') + `<circle cx="44" cy="257" r="8.5" fill="${skin}" stroke="${ink}" stroke-width="2.5"/>`;
+  };
+  const ex1 = 77, ex2 = 123, ey = 93;
+  let s = `<svg viewBox="0 0 200 262" class="av av-pereira m-${mood}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">`;
+  // corpo: polo marinho com detalhes dourados
+  s += `<g class="av-body">
+    <rect x="86" y="166" width="28" height="30" rx="9" fill="${skinD}" stroke="${ink}" stroke-width="2.5"/>
+    <path d="M44 262 L46 220 Q50 198 76 190 L100 187 L124 190 Q150 198 154 220 L156 262 Z" fill="${polo}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M60 246 Q100 254 140 246" stroke="${poloD}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"/>
+    <rect x="95" y="196" width="10" height="30" rx="2" fill="${poloD}" opacity=".45"/>
+    <path d="M95 197 L95 226 M105 197 L105 226" stroke="${gold}" stroke-width="1.6"/>
+    <circle cx="100" cy="207" r="2.3" fill="${gold}"/><circle cx="100" cy="218" r="2.3" fill="${gold}"/>
+    <path d="M120 211 L137 211 L137 220 Q137 229 128.5 234 Q120 229 120 220 Z" fill="${poloD}" stroke="${gold}" stroke-width="2"/>
+    <path d="M124 219 L128.5 215 L133 219 M124 224 L128.5 220 L133 224" stroke="${gold}" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <g class="parm parm-l">${arm(pose[0])}</g>
+    <g class="parm parm-r"><g transform="translate(200 0) scale(-1 1)">${arm(pose[1])}</g></g>
+    <path d="M68 192 Q48 196 42 212 L36 229 Q48 235 60 233 L64 214 Z" fill="${polo}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M37.5 226 Q48 232 60.5 230" stroke="${gold}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M132 192 Q152 196 158 212 L164 229 Q152 235 140 233 L136 214 Z" fill="${polo}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M162.5 226 Q152 232 139.5 230" stroke="${gold}" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M100 194 L79 185 Q74 197 83 209 Z" fill="${polo}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M100 194 L121 185 Q126 197 117 209 Z" fill="${polo}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M80.5 188.5 Q77 197 83.5 205.5 M119.5 188.5 Q123 197 116.5 205.5" stroke="${gold}" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  </g>`;
+  s += `<g class="av-head">`;
+  // orelhas
+  for (const [x, d] of [[41, -1], [159, 1]]) s += `<ellipse cx="${x}" cy="104" rx="9.5" ry="14" fill="${skin}" stroke="${ink}" stroke-width="2.5"/><path d="M${x - d * 2} 97 Q${x + d * 4} 104 ${x - d * 2} 111" stroke="${skinDD}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`;
+  // rosto
+  s += `<path d="M42 96 Q42 30 100 28 Q158 30 158 96 Q158 146 138 166 Q120 182 100 182 Q80 182 62 166 Q42 146 42 96 Z" fill="${skin}" stroke="${ink}" stroke-width="3"/>`;
+  s += `<circle cx="60" cy="114" r="9" fill="#FF6F6F" opacity=".16"/><circle cx="140" cy="114" r="9" fill="#FF6F6F" opacity=".16"/>`;
+  // olhos
+  s += `<g class="eyes">`;
+  for (const ex of [ex1, ex2]) {
+    if (mood === 'happy' || mood === 'party') s += `<path d="M${ex - 11} ${ey + 2} Q${ex} ${ey - 9} ${ex + 11} ${ey + 2}" stroke="${ink}" stroke-width="4.2" fill="none" stroke-linecap="round"/>`;
+    else if (mood === 'sleep') s += `<path d="M${ex - 11} ${ey} Q${ex} ${ey + 6} ${ex + 11} ${ey}" stroke="${ink}" stroke-width="3.8" fill="none" stroke-linecap="round"/>`;
+    else {
+      const up = mood === 'alert' ? 14 : 11, dn = mood === 'alert' ? 10 : 8;
+      s += `<path d="M${ex - 12} ${ey} Q${ex} ${ey - up} ${ex + 12} ${ey} Q${ex} ${ey + dn} ${ex - 12} ${ey} Z" fill="#fff" stroke="${ink}" stroke-width="2"/>`;
+      s += `<circle cx="${ex + 1}" cy="${ey - 1}" r="5.8" fill="#5B3A24"/><circle cx="${ex + 1}" cy="${ey - 1}" r="2.8" fill="#140F0C"/><circle cx="${ex + 3}" cy="${ey - 3.2}" r="1.7" fill="#fff"/>`;
+      if (mood === 'angry' || mood === 'worried') s += `<path d="M${ex - 13} ${ey - 13} L${ex + 13} ${ey - 13} L${ex + 13} ${ey - 1} Q${ex} ${ey - 6} ${ex - 13} ${ey - 1} Z" fill="${skin}"/><path d="M${ex - 12} ${ey - 1} Q${ex} ${ey - 6} ${ex + 12} ${ey - 1}" stroke="${ink}" stroke-width="3" fill="none" stroke-linecap="round"/>`;
+      else s += `<path d="M${ex - 12} ${ey} Q${ex} ${ey - up} ${ex + 12} ${ey}" stroke="${ink}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`;
+    }
+  }
+  s += `</g>`;
+  // sobrancelhas grossas
+  const br = {
+    angry: ['M63 75 Q78 75 91 82', 'M109 82 Q122 75 137 75'],
+    worried: ['M63 81 Q77 77 90 72', 'M110 72 Q123 77 137 81'],
+    up: ['M63 74 Q77 67 90 72', 'M110 72 Q123 67 137 74'],
+    normal: ['M63 78 Q77 72 90 76', 'M110 76 Q123 72 137 78']
+  }[mood === 'angry' ? 'angry' : mood === 'worried' ? 'worried' : (mood === 'happy' || mood === 'party' || mood === 'alert') ? 'up' : 'normal'];
+  s += `<path d="${br[0]}" stroke="${hc}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="${br[1]}" stroke="${hc}" stroke-width="8" fill="none" stroke-linecap="round"/>`;
+  // nariz
+  s += `<path d="M101 95 Q97 110 92 116 Q99 122 108 117" stroke="${skinDD}" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  // cabelo com volume, risca de lado
+  s += `<path d="M44 96 Q35 62 50 40 Q60 24 82 16 Q98 6 120 11 Q148 16 158 40 Q167 62 156 96 Q153 80 148 70 Q140 56 120 51 Q100 47 82 53 Q64 59 56 72 Q49 84 47 96 Z" fill="${hc}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  s += `<path d="M60 40 Q76 18 116 16" stroke="${hcL}" stroke-width="4" fill="none" stroke-linecap="round" opacity=".7"/><path d="M76 24 Q88 36 90 51" stroke="${hcL}" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".55"/><path d="M128 20 Q146 28 152 46" stroke="${hcL}" stroke-width="3" fill="none" stroke-linecap="round" opacity=".45"/>`;
+  // barba cheia (com bigode)
+  s += `<path d="M45 90 L51 90 Q52 124 70 134 Q84 125 100 129 Q116 125 130 134 Q148 124 149 90 L155 90 Q161 152 137 174 Q120 190 100 195 Q80 190 63 174 Q39 152 45 90 Z" fill="${hc}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  s += `<path d="M66 166 Q100 186 134 166 M74 146 Q70 156 76 164 M126 146 Q130 156 124 164 M86 131 Q93 128 98 131 M102 131 Q107 128 114 131" stroke="${hcL}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".45"/>`;
+  // boca
+  const my = 148;
+  if (mood === 'happy' || mood === 'party') s += `<path d="M83 ${my - 4} Q100 ${my + 20} 117 ${my - 4} Z" fill="#6B2525" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M86 ${my - 3} Q100 ${my + 2} 114 ${my - 3} L113 ${my + 1} Q100 ${my + 5} 87 ${my + 1} Z" fill="#fff"/>`;
+  else if (mood === 'talk' || mood === 'listen') s += `<g class="mouth-talk"><ellipse cx="100" cy="${my + 1}" rx="9.5" ry="7" fill="#6B2525" stroke="${ink}" stroke-width="2.2"/><ellipse cx="100" cy="${my + 4}" rx="5" ry="2.4" fill="#E07A7A"/></g>`;
+  else if (mood === 'alert') s += `<ellipse cx="100" cy="${my + 1}" rx="6.5" ry="8" fill="#6B2525" stroke="${ink}" stroke-width="2.2"/>`;
+  else if (mood === 'angry' || mood === 'worried') s += `<path d="M84 ${my + 4} Q92 ${my - 5} 100 ${my - 3} Q108 ${my - 5} 116 ${my + 4} Q100 ${my + 4} 84 ${my + 4} Z" fill="${lip}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M87 ${my + 2} Q100 ${my - 2} 113 ${my + 2}" stroke="#8E4A40" stroke-width="1.6" fill="none"/>`;
+  else if (mood === 'sleep') s += `<path d="M90 ${my - 1} Q100 ${my + 4} 110 ${my - 1} Q100 ${my + 7} 90 ${my - 1} Z" fill="${lip}" stroke="${ink}" stroke-width="2"/>`;
+  else s += `<path d="M83 ${my - 3} Q92 ${my - 7} 100 ${my - 4} Q108 ${my - 7} 117 ${my - 3} Q109 ${my + 9} 100 ${my + 9} Q91 ${my + 9} 83 ${my - 3} Z" fill="${lip}" stroke="${ink}" stroke-width="2.2" stroke-linejoin="round"/><path d="M85 ${my - 2} Q100 ${my + 3} 115 ${my - 2}" stroke="#8E4A40" stroke-width="1.8" fill="none" stroke-linecap="round"/>`;
+  s += `</g>`;
+  const stk = { alert: '⏰', angry: '💢', party: '🎉', sleep: '💤', worried: '💦', listen: '🎧' }[mood];
+  if (stk) s += `<text class="stk" x="172" y="40" font-size="28" text-anchor="middle">${stk}</text>`;
+  return s + `</svg>`;
+}
+function hairFront(h, L, R, T, cy, hc, ink, F) {
+  const st = `fill="${hc}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"`;
+  if (h === 'careca') return `<ellipse cx="${100 - F.hw * .35}" cy="${T + 16}" rx="17" ry="8" fill="#fff" opacity=".35" transform="rotate(-18 ${100 - F.hw * .35} ${T + 16})"/>`;
+  if (h === 'raspado') return `<path d="M${L + 1} ${cy - 10} Q${L - 2} ${T - 4} 100 ${T - 6} Q${R + 2} ${T - 4} ${R - 1} ${cy - 10} Q${R - 8} ${T + 24} 100 ${T + 18} Q${L + 8} ${T + 24} ${L + 1} ${cy - 10} Z" fill="${hc}" opacity=".55"/>`;
+  if (h === 'curto') return `<path d="M${L - 1} ${cy - 6} Q${L - 6} ${T - 10} 100 ${T - 12} Q${R + 6} ${T - 10} ${R + 1} ${cy - 6} Q${R - 4} ${T + 30} ${R - 24} ${T + 22} Q120 ${T + 34} 100 ${T + 22} Q80 ${T + 34} ${L + 24} ${T + 22} Q${L + 4} ${T + 30} ${L - 1} ${cy - 6} Z" ${st}/>`;
+  if (h === 'topete') return `<path d="M${L} ${cy - 8} Q${L - 8} ${T + 2} ${L + 26} ${T - 14} Q${100} ${T - 40} ${R - 6} ${T - 20} Q${R + 14} ${T} ${R} ${cy - 8} Q${R - 6} ${T + 28} ${R - 28} ${T + 20} Q100 ${T + 32} ${L + 28} ${T + 20} Q${L + 6} ${T + 28} ${L} ${cy - 8} Z" ${st}/><path d="M${L + 40} ${T - 10} Q100 ${T - 30} ${R - 22} ${T - 14}" stroke="#fff" stroke-opacity=".3" stroke-width="4" fill="none" stroke-linecap="round"/>`;
+  if (h === 'entradas') return `<path d="M${L - 1} ${cy - 2} Q${L - 4} ${T + 12} ${L + 18} ${T + 2} Q${L + 22} ${T + 22} ${L + 12} ${cy - 22} Q${L + 4} ${cy - 14} ${L - 1} ${cy - 2} Z" ${st}/><path d="M${R + 1} ${cy - 2} Q${R + 4} ${T + 12} ${R - 18} ${T + 2} Q${R - 22} ${T + 22} ${R - 12} ${cy - 22} Q${R - 4} ${cy - 14} ${R + 1} ${cy - 2} Z" ${st}/><path d="M86 ${T + 4} Q100 ${T - 6} 114 ${T + 4} Q100 ${T + 12} 86 ${T + 4} Z" ${st}/>`;
+  if (h === 'cacheado' || h === 'black') {
+    let out = ''; const n = h === 'black' ? 9 : 11; const rr = h === 'black' ? 15 : 14;
+    for (let i = 0; i < n; i++) { const a = (200 + (140 * i) / (n - 1)) * Math.PI / 180; const x = 100 + Math.cos(a) * (F.hw + 2), y = cy + Math.sin(a) * (F.ry - 4); out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr}" ${st}/>`; }
+    for (let i = 0; i < 7; i++) { const a = (218 + (104 * i) / 6) * Math.PI / 180; const x = 100 + Math.cos(a) * (F.hw * .72), y = cy + Math.sin(a) * (F.ry * .78); out += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rr - 2}" ${st}/>`; }
+    return out;
+  }
+  if (h === 'comprido') return `<path d="M${L} ${cy - 4} Q${L - 2} ${T - 8} 100 ${T - 10} Q${R + 2} ${T - 8} ${R} ${cy - 4} Q${R - 6} ${T + 22} 116 ${T + 18} Q92 ${T + 34} ${L} ${cy - 4} Z" ${st}/>`;
+  return '';
+}
+function capSVG(L, R, T, c, cd, ink) {
+  return `<path d="M${L - 3} ${T + 32} Q${L - 2} ${T - 16} 100 ${T - 18} Q${R + 2} ${T - 16} ${R + 3} ${T + 32} Z" fill="${c}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+  <path d="M${L - 8} ${T + 30} Q100 ${T + 14} ${R + 8} ${T + 30} Q${R + 10} ${T + 42} ${R - 4} ${T + 40} Q100 ${T + 28} ${L + 4} ${T + 40} Q${L - 10} ${T + 42} ${L - 8} ${T + 30} Z" fill="${cd}" stroke="${ink}" stroke-width="2.5" stroke-linejoin="round"/>
+  <circle cx="100" cy="${T - 16}" r="5" fill="${cd}" stroke="${ink}" stroke-width="2"/>
+  <path d="M100 ${T - 12} L100 ${T + 22}" stroke="${ink}" stroke-opacity=".25" stroke-width="2"/>`;
+}
+
+/* ============ fala, som, vibração ============ */
+let actx = null;
+function audio() {
+  try { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === 'suspended') actx.resume(); } catch (e) { actx = null; }
+  return actx;
+}
+function chime(kind = 'remind') {
+  if (!S.settings.sound) return;
+  const a = audio(); if (!a) return;
+  const seq = { remind: [784, 988, 1175, 988, 1319], done: [523, 659, 784, 1047], listen: [660, 990], add: [700, 1050], angry: [440, 440, 523, 440] }[kind] || [880];
+  seq.forEach((f, i) => {
+    const o = a.createOscillator(), g = a.createGain();
+    o.type = kind === 'angry' ? 'square' : 'triangle'; o.frequency.value = f;
+    const t = a.currentTime + i * 0.13;
+    g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(kind === 'angry' ? 0.12 : 0.28, t + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+    o.connect(g).connect(a.destination); o.start(t); o.stop(t + 0.36);
+  });
+}
+function buzz(p) { if (S.settings.vibrate && navigator.vibrate) try { navigator.vibrate(p); } catch (e) {} }
+let ptVoice = null;
+function pickVoice() {
+  try { const vs = speechSynthesis.getVoices(); ptVoice = vs.find((v) => /pt[-_]BR/i.test(v.lang)) || vs.find((v) => /^pt/i.test(v.lang)) || null; } catch (e) {}
+}
+if ('speechSynthesis' in window) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text, force) {
+  if (!(force || S.settings.speak) || !('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text.replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, ''));
+    u.lang = 'pt-BR'; if (ptVoice) u.voice = ptVoice; u.rate = 1.05; u.pitch = 1.15;
+    speechSynthesis.speak(u);
+  } catch (e) {}
+}
+
+/* ============ toast, confete, folha ============ */
+let toastTimer;
+function toast(msg, action, fn, ms = 4200) {
+  const host = $('#toastHost');
+  host.innerHTML = `<div class="toast" role="status"><span>${msg}</span>${action ? `<button>${esc(action)}</button>` : ''}</div>`;
+  if (action) $('button', host).onclick = () => { host.innerHTML = ''; fn && fn(); };
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { host.innerHTML = ''; }, ms);
+}
+function celebrate() {
+  chime('done'); buzz([60, 40, 60]);
+  const box = $('#confetti'); const cols = ['#FF6B4A', '#12B5A5', '#FFC93C', '#8B7CF6', '#FF8FB1', '#3B82F6'];
+  let h = '';
+  for (let i = 0; i < 70; i++) h += `<i style="left:${Math.random() * 100}%;background:${cols[i % cols.length]};animation-delay:${Math.random() * .5}s;animation-duration:${1.6 + Math.random() * 1.2}s;transform:rotate(${Math.random() * 360}deg)"></i>`;
+  box.innerHTML = h; setTimeout(() => { box.innerHTML = ''; }, 3200);
+}
+let sheetOnClose = null;
+function openSheet(html, onMount, onClose) {
+  const host = $('#sheetHost');
+  host.innerHTML = `<div class="backdrop"></div><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div><div class="inner">${html}</div></div>`;
+  $('.backdrop', host).onclick = closeSheet;
+  sheetOnClose = onClose || null;
+  onMount && onMount($('.sheet', host));
+}
+function closeSheet() { $('#sheetHost').innerHTML = ''; const f = sheetOnClose; sheetOnClose = null; f && f(); render(); }
+
+/* ============ balão do herói ============ */
+let sayUntil = 0, sayMood = 'normal';
+function say(text, mood = 'talk', ms = 4000, voice = false) {
+  sayUntil = Date.now() + ms; sayMood = mood;
+  $('#heroAv').innerHTML = avatarSVG(S.avatar, mood) + '<span class="tap">fala com o ' + esc(BOT()) + ' 🎤</span>';
+  const b = $('#heroBubble'); b.innerHTML = text; b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+  if (voice) speak(b.textContent);
+  setTimeout(() => { if (Date.now() >= sayUntil) renderHero(); }, ms + 50);
+}
+function greeting() { const h = new Date().getHours(); return h < 5 ? 'Boa madrugada' : h < 12 ? 'Bom dia' : h < 18 ? 'Boa tarde' : 'Boa noite'; }
+let lastHeroKey = '';
+function renderHero(force) {
+  if (Date.now() < sayUntil && !force) return;
+  const now = Date.now();
+  const pend = S.tasks.filter((t) => !t.deleted && !t.done);
+  const late = pend.filter((t) => t.dueAt <= now);
+  const upcoming = pend.filter((t) => t.dueAt > now && t.alarm).sort((a, b) => a.dueAt - b.dueAt);
+  let mood = 'normal', txt = '';
+  const nm = esc(S.settings.name || '');
+  if (late.length) { mood = 'worried'; txt = `Ô ${nm}, tem ${late.length} atrasada${late.length > 1 ? 's' : ''}! Bora? 😬<small>${esc(late[0].text)}</small>`; }
+  else if (upcoming.length) { const n = upcoming[0]; txt = `${greeting()}, ${nm}! Próximo: <u>${esc(n.text)}</u><small>⏰ ${fmtWhen(n.dueAt)}</small>`; }
+  else if (pend.length) { txt = `${greeting()}, ${nm}! ${pend.length} tarefa${pend.length > 1 ? 's' : ''} sem aviso na lista.<small>Me diz o que lembrar 🎤</small>`; }
+  else { mood = 'happy'; txt = `Tudo em dia, ${nm}! 😎<small>Toque em mim e fala o que eu te lembro.</small>`; }
+  if (S.settings.quiet.on && inQuiet(now) && !late.length) { mood = 'sleep'; txt = `Zzz… modo silêncio até ${esc(S.settings.quiet.to)}.<small>${upcoming.length ? 'Próximo: ' + esc(upcoming[0].text) : 'Nada pendente.'}</small>`; }
+  const key = mood + '|' + txt + '|' + JSON.stringify(S.avatar).length + S.avatar.mode;
+  if (key === lastHeroKey && !force) return; lastHeroKey = key;
+  $('#heroAv').innerHTML = avatarSVG(S.avatar, mood) + '<span class="tap">fala com o ' + esc(BOT()) + ' 🎤</span>';
+  $('#heroBubble').innerHTML = txt;
+}
+
+/* ============ estatísticas ============ */
+function renderStats() {
+  const done = S.tasks.filter((t) => t.done && !t.deleted);
+  const today = done.filter((t) => dayDiff(t.doneAt) === 0).length;
+  const days = new Set(done.map((t) => { const d = new Date(t.doneAt); return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate(); }));
+  let streak = 0; const d = new Date();
+  if (!days.has(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate())) d.setDate(d.getDate() - 1);
+  while (days.has(d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate())) { streak++; d.setDate(d.getDate() - 1); }
+  const pend = S.tasks.filter((t) => !t.deleted && !t.done).length;
+  const bells = S.tasks.filter((t) => isActive(t)).length;
+  $('#stats').innerHTML = `<div class="stat">✅ <b>${today}</b> feita${today === 1 ? '' : 's'} hoje</div><div class="stat">🔥 <b>${streak}</b> dia${streak === 1 ? '' : 's'} seguido${streak === 1 ? '' : 's'}</div><div class="stat">📝 <b>${pend}</b> a fazer</div><div class="stat">🔔 <b>${bells}</b> avisando</div><div class="stat">⭐ <b>${done.length * 10}</b> pontos</div>`;
+}
+
+/* ============ cartão de configuração inicial ============ */
+function isStandalone() { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; }
+function renderSetup() {
+  const nt = S.settings.ntfy;
+  const items = [
+    { k: 'avatar', ok: S.avatarDone, t: '🎨 Personalize o ' + esc(BOT()) },
+    { k: 'ntfy', ok: nt.on && nt.ok > 0, t: '🔔 Avisos com o app fechado' },
+    { k: 'install', ok: isStandalone() || S.installed, t: '📲 Instalar na tela inicial' }
+  ];
+  const card = $('#setupCard');
+  if (S.setupHidden || items.every((i) => i.ok)) { card.classList.add('hidden'); return; }
+  card.classList.remove('hidden');
+  card.innerHTML = `<h3>Deixa eu ficar 100% em 2 minutinhos 🛠️</h3>` + items.map((i) => `<button class="item ${i.ok ? 'ok' : ''}" data-setup="${i.k}"><span class="ck">${i.ok ? '✓' : ''}</span>${i.t}<span class="go">${i.ok ? '' : '›'}</span></button>`).join('') + `<button class="linkbtn" data-setup="hide">esconder isso</button>`;
+  $$('[data-setup]', card).forEach((b) => b.onclick = () => {
+    const k = b.dataset.setup;
+    if (k === 'avatar') openAvatarEditor();
+    if (k === 'ntfy') openNtfy();
+    if (k === 'install') openInstall();
+    if (k === 'hide') { S.setupHidden = true; save(); renderSetup(); }
+  });
+}
+
+/* ============ compositor ============ */
+let compWhen = null, compWhenKey = null, compEvery = null;
+const EVERY_OPTS = [60, 30, 15, 120, 180, 0];
+function whenChips() {
+  const now = new Date(); const h = now.getHours();
+  const list = [
+    { k: 'p15', l: '+15 min', f: () => Date.now() + 15 * MIN },
+    { k: 'p60', l: '+1 h', f: () => Date.now() + HOUR }
+  ];
+  if (h < 17) list.push({ k: 'h18', l: 'Hoje 18h', f: () => atDay(0, 18) });
+  else if (h < 20) list.push({ k: 'h21', l: 'Hoje 21h', f: () => atDay(0, 21) });
+  list.push({ k: 'a9', l: 'Amanhã 9h', f: () => atDay(1, 9) });
+  list.push({ k: 'pick', l: '📅 Escolher' });
+  return list;
+}
+function renderComposer() {
+  const v = $('#inp').value;
+  const p = parseTask(v);
+  const text = p.text || '';
+  let due = compWhen ?? p.due;
+  const every = compEvery ?? (p.every ?? S.settings.every);
+  const parts = [];
+  if (v.trim()) {
+    parts.push(`<span class="tag t">📝 ${esc(text || '…')}</span>`);
+    parts.push(`<span class="tag w">⏰ ${due ? fmtWhen(due) : (p.every ? 'em ' + fmtEvery(p.every).replace('a cada ', '') : 'em 1 h (padrão)')}</span>`);
+    if (p.recur) parts.push(`<span class="tag r">♻️ ${RECUR_SHORT[p.recur]}</span>`);
+  } else parts.push('<span>Escreva ou toque no 🎤. Pode falar natural: <i>“tomar remédio às 8 da noite todo dia”</i></span>');
+  $('#prev').innerHTML = parts.join('');
+  $('#whenChips').innerHTML = whenChips().map((c) => `<button class="chip ${compWhenKey === c.k ? 'on' : ''}" data-when="${c.k}">${c.l}</button>`).join('');
+  $$('#whenChips [data-when]').forEach((b) => b.onclick = () => {
+    const c = whenChips().find((x) => x.k === b.dataset.when);
+    if (c.k === 'pick') { $('#pickWrap').classList.toggle('hidden'); if (!$('#pickDt').value) $('#pickDt').value = toLocalInput(Date.now() + HOUR); compWhenKey = 'pick'; compWhen = fromLocalInput($('#pickDt').value); }
+    else if (compWhenKey === c.k) { compWhenKey = null; compWhen = null; }
+    else { compWhenKey = c.k; compWhen = c.f(); $('#pickWrap').classList.add('hidden'); }
+    renderComposer();
+  });
+  $('#repChip').textContent = '🔁 ' + fmtEvery(every);
+}
+function resetComposer() {
+  $('#inp').value = ''; compWhen = null; compWhenKey = null; compEvery = null; $('#pickWrap').classList.add('hidden'); $('#pickDt').value = '';
+  autoGrow(); renderComposer();
+}
+function autoGrow() { const ta = $('#inp'); ta.style.height = 'auto'; ta.style.height = Math.min(140, ta.scrollHeight + 2) + 'px'; }
+function submitComposer() {
+  const raw = $('#inp').value.trim();
+  if (!raw) { const c = $('#inp').closest('.card'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake'); $('#inp').focus(); return; }
+  const p = parseTask(raw);
+  const text = p.text || cap1(raw);
+  const every = compEvery ?? (p.every ?? S.settings.every);
+  const due = compWhen ?? p.due ?? (p.every ? Date.now() + p.every * MIN : Date.now() + HOUR);
+  const t = addTask({ text, due, every, recur: p.recur });
+  chime('add'); buzz(30);
+  resetComposer();
+  say(`Anotado! 📝 Te lembro de <u>${esc(text)}</u><small>⏰ ${fmtWhen(due)} · 🔁 ${fmtEvery(every)}</small>`, 'happy', 4200);
+  toast('Lembrete criado', 'Desfazer', () => { S.tasks = S.tasks.filter((x) => x !== t); save(); render(); });
+  $('#inp').blur();
+  afterFirstTask();
+}
+function afterFirstTask() {
+  if (!PREVIEW && !S.settings.ntfy.on && !S._ntfyNudged) {
+    S._ntfyNudged = true; save();
+    setTimeout(() => toast('Quer que eu te avise mesmo com o app fechado?', 'Configurar', openNtfy, 8000), 4500);
+  }
+}
+
+/* ============ lista ============ */
+let tab = 'todo';
+function taskRow(t) {
+  const now = Date.now();
+  const late = !t.done && t.dueAt <= now;
+  const meta = [];
+  if (t.done) meta.push(`<span>✅ feita ${fmtWhen(t.doneAt)}</span>`);
+  else {
+    meta.push(`<span class="${late ? 'late' : ''}">${late ? '⚠️ era ' : '⏰ '}${fmtWhen(t.dueAt)}</span>`);
+    if (t.alarm) { const nx = nextSlot(t, now); meta.push(`<span>🔔 ${fmtEvery(t.every)}${late && nx ? ' · próx. ' + hm(nx) : ''}</span>`); }
+    else meta.push(`<span class="off">🔕 aviso desligado</span>`);
+  }
+  if (t.recur && t.recur !== 'none') meta.push(`<span>♻️ ${RECUR_SHORT[t.recur]}</span>`);
+  const bell = t.done ? '' : `<button class="bell ${t.alarm ? 'on' : ''}" data-bell="${t.id}" aria-label="${t.alarm ? 'Desligar aviso' : 'Ligar aviso'}">${t.alarm ? '🔔' : '🔕'}</button>`;
+  return `<div class="task ${t.done ? 'done' : ''} ${late && !t.done ? 'late' : ''}">
+    <button class="ckb" data-ck="${t.id}" aria-label="${t.done ? 'Marcar como não feita' : 'Marcar como feita'}">${t.done ? '✓' : ''}</button>
+    <button class="body" data-open="${t.id}"><div class="tx">${esc(t.text)}</div><div class="meta">${meta.join('')}</div></button>
+    ${bell}
+  </div>`;
+}
+function renderList() {
+  const now = Date.now();
+  const live = S.tasks.filter((t) => !t.deleted);
+  const todo = live.filter((t) => !t.done).sort((a, b) => a.dueAt - b.dueAt);
+  const done = live.filter((t) => t.done).sort((a, b) => b.doneAt - a.doneAt);
+  $('#nTodo').textContent = todo.length; $('#nDone').textContent = done.length;
+  $$('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.tab === tab));
+  let h = '';
+  const group = (title, arr, cls = '') => { if (arr.length) h += `<div class="grp ${cls}">${title}</div>` + arr.map(taskRow).join(''); };
+  if (tab === 'todo') {
+    if (!todo.length) h = `<div class="empty"><div class="big">🏖️</div>Nada pra fazer. Aproveita!<br><small>Toque no 🎤 pra criar um lembrete.</small></div>`;
+    group('⚠️ Atrasadas', todo.filter((t) => t.dueAt <= now), 'late');
+    group('Hoje', todo.filter((t) => t.dueAt > now && dayDiff(t.dueAt) === 0));
+    group('Amanhã', todo.filter((t) => t.dueAt > now && dayDiff(t.dueAt) === 1));
+    group('Mais pra frente', todo.filter((t) => t.dueAt > now && dayDiff(t.dueAt) > 1));
+  } else if (tab === 'done') {
+    if (!done.length) h = `<div class="empty"><div class="big">🌱</div>Nenhuma feita ainda.<br><small>Quando marcar como feita, ela vem pra cá.</small></div>`;
+    group('Hoje', done.filter((t) => dayDiff(t.doneAt) === 0));
+    group('Ontem', done.filter((t) => dayDiff(t.doneAt) === -1));
+    group('Antes', done.filter((t) => dayDiff(t.doneAt) < -1));
+  } else {
+    if (!live.length) h = `<div class="empty"><div class="big">📭</div>Lista vazia.</div>`;
+    group('A fazer', todo); group('Feitas', done);
+  }
+  $('#list').innerHTML = h;
+}
+$('#list').addEventListener('click', (e) => {
+  const ck = e.target.closest('[data-ck]'), op = e.target.closest('[data-open]'), bl = e.target.closest('[data-bell]');
+  if (ck) { const t = getTask(ck.dataset.ck); if (t.done) { undoDone(t); toast('Voltou pra lista de “a fazer”'); } else markDone(t); }
+  else if (bl) { const t = getTask(bl.dataset.bell); if (t.alarm) { muteTask(t, { quiet: true }); toast('🔕 Aviso desligado — a tarefa continua na lista', 'Desfazer', () => unmuteTask(t)); } else unmuteTask(t); }
+  else if (op) openTask(getTask(op.dataset.open));
+});
+$('#tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; renderList(); } });
+
+function render() { renderHero(); renderStats(); renderSetup(); renderList(); }
+
+/* ============ folha de tarefa ============ */
+function openTask(t) {
+  if (!t) return;
+  const opts = (arr, cur, lab) => arr.map((v) => `<option value="${v}" ${String(v) === String(cur) ? 'selected' : ''}>${lab(v)}</option>`).join('');
+  const everyList = [...new Set([0, 15, 30, 60, 120, 180, 240, t.every])].sort((a, b) => a - b);
+  openSheet(`
+    <h2>${t.done ? '✅ Tarefa feita' : '✏️ Tarefa'}</h2>
+    <div class="field"><label>O que é</label><input type="text" id="tText" value="${esc(t.text)}" maxlength="200"></div>
+    <div class="field"><label>Quando</label><input type="datetime-local" id="tDue" value="${toLocalInput(t.dueAt)}"></div>
+    <div class="chips"><button class="chip" data-sn="15">+15 min</button><button class="chip" data-sn="60">+1 h</button><button class="chip" data-sn="180">+3 h</button><button class="chip" data-sn="tm">Amanhã 9h</button></div>
+    <label class="switch"><span>🔔 Avisar<small>${t.alarm ? 'Ligado — vou te cutucar até você resolver' : 'Desligado — fica só na lista'}</small></span><span class="tg"><input type="checkbox" id="tAlarm" ${t.alarm ? 'checked' : ''}><span></span></span></label>
+    <div class="row">
+      <div class="field"><label>Insistir</label><select id="tEvery">${opts(everyList, t.every, fmtEvery)}</select></div>
+      <div class="field"><label>Repetir tarefa</label><select id="tRecur">${opts(Object.keys(RECUR), t.recur || 'none', (k) => RECUR[k])}</select></div>
+    </div>
+    <div class="btnrow">
+      <button class="btn primary" id="tSave">Salvar</button>
+      ${t.done ? '<button class="btn" id="tUndo">↩️ Não feita</button>' : '<button class="btn teal" id="tDone">✅ Feita</button>'}
+    </div>
+    <div class="btnrow"><button class="btn ghost danger" id="tDel">🗑️ Excluir</button></div>
+  `, (el) => {
+    let pendingDue = null;
+    $$('[data-sn]', el).forEach((b) => b.onclick = () => {
+      const v = b.dataset.sn; pendingDue = v === 'tm' ? atDay(1, 9) : Date.now() + (+v) * MIN;
+      $('#tDue').value = toLocalInput(pendingDue); $('#tAlarm').checked = true;
+      $$('[data-sn]', el).forEach((x) => x.classList.toggle('on', x === b));
+    });
+    $('#tSave').onclick = () => {
+      const txt = $('#tText').value.trim(); if (txt) t.text = txt;
+      const nd = fromLocalInput($('#tDue').value);
+      const ne = +$('#tEvery').value; const al = $('#tAlarm').checked;
+      if (nd && nd !== t.dueAt) setDue(t, nd);
+      if (ne !== t.every) { t.every = ne; t.ack = Math.max(t.ack, Date.now()); }
+      t.recur = $('#tRecur').value;
+      if (al !== t.alarm) { if (al) { t.alarm = true; if (t.dueAt < Date.now() && !(nd && nd > Date.now())) { t.anchor = ceilMin(Date.now() + (t.every || 60) * MIN); t.ordBase = 0; } t.ack = Date.now(); } else { t.alarm = false; t.ack = Date.now(); } }
+      save(); ntfySync(); closeSheet(); toast('💾 Salvo');
+    };
+    const d = $('#tDone'); if (d) d.onclick = () => { closeSheet(); markDone(t); };
+    const u = $('#tUndo'); if (u) u.onclick = () => { closeSheet(); undoDone(t); };
+    let armed = false;
+    $('#tDel').onclick = (e) => {
+      if (!armed) { armed = true; e.target.textContent = '⚠️ Toque de novo pra excluir'; setTimeout(() => { armed = false; if (e.target.isConnected) e.target.textContent = '🗑️ Excluir'; }, 3000); return; }
+      closeSheet(); deleteTask(t); toast('🗑️ Excluída', 'Desfazer', () => { t.deleted = false; t.alarm = !t.done; save(); render(); ntfySync(); });
+    };
+  });
+}
+
+/* ============ overlay do lembrete ============ */
+const ovQueue = []; let ovCur = null;
+function kicker(n, name) {
+  const nm = name || '';
+  if (n <= 1) return `⏰ ${nm}, tá na hora!`;
+  if (n === 2) return `👀 Psiu, ${nm}… lembra disso?`;
+  if (n === 3) return `🙄 ${nm}, 3º aviso!`;
+  if (n === 4) return `😤 Não vou desistir, ${nm}!`;
+  return `🚨 Aviso nº ${n}: bora resolver isso!`;
+}
+function notifTitle(n) { return kicker(n, S.settings.name).replace(/^(\S+)\s/, (m, e) => e + ' ' + BOT() + ': '); }
+function moodFor(n) { return n <= 1 ? 'alert' : n <= 3 ? 'worried' : 'angry'; }
+function queueOverlay(t, s) {
+  if (ovQueue.some((x) => x.t.id === t.id) || (ovCur && ovCur.t.id === t.id)) return;
+  ovQueue.push({ t, s });
+  if (!ovCur) nextOverlay();
+}
+function nextOverlay() {
+  ovCur = ovQueue.shift() || null;
+  if (!ovCur) { $('#ov').classList.add('hidden'); render(); return; }
+  const { t, s } = ovCur; const n = ordinal(t, s);
+  $('#ovKicker').textContent = kicker(n, S.settings.name);
+  $('#ovText').textContent = t.text;
+  $('#ovMeta').textContent = (t.dueAt <= Date.now() ? 'Era pra ' + fmtWhen(t.dueAt) : fmtWhen(t.dueAt)) + (t.alarm && t.every ? ' · aviso ' + fmtEvery(t.every) : '');
+  const cnt = ovQueue.length; $('#ovCount').classList.toggle('hidden', !cnt); $('#ovCount').textContent = '+' + cnt + ' na fila';
+  $('#ovLater').textContent = '⏰ Daqui ' + (t.every ? fmtEvery(t.every).replace('a cada ', '') : '1 h');
+  const m = moodFor(n);
+  $('#ovAv').innerHTML = avatarSVG(S.avatar, m);
+  $('#ov').classList.remove('hidden');
+  const b = $('.ov-bubble'); b.classList.remove('shake'); void b.offsetWidth; if (n >= 3) b.classList.add('shake');
+  chime(n >= 4 ? 'angry' : 'remind'); buzz(n >= 3 ? [300, 120, 300, 120, 300] : [200, 100, 200]);
+  speak(`${S.settings.name}, ${n > 1 ? 'de novo: ' : ''}${t.text}!`);
+  setTimeout(() => { if (ovCur && $('#ovAv svg')) $('#ovAv').innerHTML = avatarSVG(S.avatar, 'talk'); setTimeout(() => { if (ovCur) $('#ovAv').innerHTML = avatarSVG(S.avatar, m); }, 2200); }, 900);
+}
+function closeOverlayWith(fn) {
+  const cur = ovCur; if (!cur) return;
+  cur.t.ack = Math.max(cur.t.ack || 0, cur.s, Date.now());
+  fn && fn(cur.t); save();
+  nextOverlay();
+}
+$('#ovDone').onclick = () => closeOverlayWith((t) => markDone(t));
+$('#ovStop').onclick = () => closeOverlayWith((t) => muteTask(t));
+$('#ovLater').onclick = () => closeOverlayWith((t) => { snooze(t, t.every || 60); toast('⏰ Beleza, te cutuco de novo ' + fmtWhen(t.anchor)); });
+
+/* ============ motor de lembretes (com o app aberto) ============ */
+let reg = null;
+async function localNotify(t, s) {
+  if (!reg || !('Notification' in window) || Notification.permission !== 'granted') return;
+  const n = ordinal(t, s);
+  try {
+    await reg.showNotification(notifTitle(n), {
+      body: t.text, icon: 'icon-192.png', badge: 'icon-192.png', tag: 'lembraai-' + t.id, renotify: true, requireInteraction: true,
+      vibrate: [200, 100, 200], data: { id: t.id }, actions: [{ action: 'feito', title: '✅ Feito' }, { action: 'parar', title: '🔕 Parar avisos' }]
+    });
+  } catch (e) {}
+}
+function tick() {
+  const now = Date.now();
+  const visible = document.visibilityState === 'visible';
+  for (const t of S.tasks) {
+    if (!isActive(t)) continue;
+    const s = lastSlotUpTo(t, now);
+    if (s == null || s <= (t.ack || 0)) continue;
+    if (visible) { if (t.shown !== s) { t.shown = s; save(); queueOverlay(t, s); } }
+    else if (t.notified !== s) { t.notified = s; save(); if (!(S.settings.ntfy.on && S.settings.ntfy.ok)) localNotify(t, s); }
+  }
+  if (Date.now() >= sayUntil) renderHero();
+}
+
+/* ============ ntfy: avisos no celular com o app fechado ============ */
+const APP_URL = location.origin + location.pathname.replace(/index\.html$/, '');
+const ICON_URL = new URL('icon-192.png', location.href).href;
+function ntBase() { return (S.settings.ntfy.server || 'https://ntfy.sh').replace(/\/+$/, ''); }
+function seqFor(t, at) { return 'la' + t.id + 'x' + Math.floor(at / MIN).toString(36); }
+function payloadFor(t, at, topic) {
+  const n = ordinal(t, at), q = encodeURIComponent(t.id);
+  const tp = encodeURIComponent(topic), a = Math.floor(t.anchor / MIN).toString(36), e = t.every || 0;
+  const extra = `&tp=${tp}&a=${a}&e=${e}`;
+  return {
+    topic, title: notifTitle(n), message: t.text + (t.dueAt < at - 2 * MIN ? `\n(marcado ${fmtAt(t.dueAt, at)})` : ''),
+    priority: S.settings.strong ? (n >= 4 ? 5 : 4) : 4,
+    click: `${APP_URL}?acao=ver&id=${q}${extra}`, icon: ICON_URL,
+    actions: [
+      { action: 'view', label: '✅ Feito', url: `${APP_URL}?acao=feito&id=${q}${extra}`, clear: true },
+      { action: 'view', label: '🔕 Parar avisos', url: `${APP_URL}?acao=parar&id=${q}${extra}`, clear: true }
+    ],
+    sequence_id: seqFor(t, at)
+  };
+}
+function hashStr(s) { let h = 0; for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return h.toString(36); }
+function countSent() { const nt = S.settings.ntfy; const d = new Date().toDateString(); if (nt.day !== d) { nt.day = d; nt.sent = 0; } nt.sent++; }
+async function ntfyFetch(url, opts) {
+  try {
+    const r = await fetch(url, Object.assign({ cache: 'no-store' }, opts));
+    if (r.status === 429) { S.settings.ntfy.err = 'Limite diário do ntfy atingido. Volta ao normal em algumas horas.'; throw new Error('429'); }
+    if (r.status === 404 && /\/delete$/.test(url)) return true;
+    if (!r.ok) { S.settings.ntfy.err = 'Erro ' + r.status + ' do servidor ntfy'; throw new Error('http ' + r.status); }
+    return true;
+  } catch (e) {
+    if (e && /^(429|http)/.test(e.message)) throw e;
+    // CORS ou rede: tenta modo "no-cors" (a mensagem chega, só não dá pra ler a resposta)
+    if (!navigator.onLine) { S.settings.ntfy.err = 'Sem internet agora'; throw e; }
+    await fetch(url, Object.assign({ mode: 'no-cors', cache: 'no-store' }, opts));
+    return 'opaque';
+  }
+}
+async function ntPublish(body) {
+  countSent();
+  return ntfyFetch(ntBase() + '/', { method: 'POST', body: JSON.stringify(body) });
+}
+async function ntDelete(topic, seq) {
+  countSent();
+  return ntfyFetch(ntBase() + '/' + encodeURIComponent(topic) + '/' + encodeURIComponent(seq) + '/delete', { method: 'GET' });
+}
+let syncing = false, resync = false, syncTimer = null;
+function ntfySync() { clearTimeout(syncTimer); syncTimer = setTimeout(ntfySyncNow, 600); }
+async function ntfySyncNow() {
+  if (PREVIEW) return;
+  if (syncing) { resync = true; return; }
+  syncing = true;
+  try {
+    const nt = S.settings.ntfy; const on = nt.on && !!nt.topic;
+    const now = Date.now(), horizon = now + 3 * DAY - 10 * MIN;
+    const ops = [];
+    for (const t of S.tasks) {
+      t.nt = (t.nt || []).filter((x) => x.at > now - 12 * HOUR || !x.del);
+      const want = on && isActive(t) ? slotsBetween(t, now + 15000, horizon, Math.max(1, Math.min(48, nt.ahead || 12))) : [];
+      const wantMap = new Map(want.map((at) => [seqFor(t, at), at]));
+      for (const x of t.nt) {
+        if (x.at > now && (!wantMap.has(x.seq) || x.topic !== nt.topic || !on)) ops.push({ k: 'del', t, x });
+        else if (x.at <= now && !isActive(t) && !x.cleared && x.at > now - 12 * HOUR) ops.push({ k: 'del', t, x, delivered: true });
+      }
+      if (on) for (const [seq, at] of wantMap) {
+        const body = payloadFor(t, at, nt.topic);
+        if (at - Date.now() > 12000) body.delay = String(Math.floor(at / 1000));
+        const h = hashStr(JSON.stringify(Object.assign({}, body, { delay: '' })));
+        const ex = t.nt.find((x) => x.seq === seq && x.topic === nt.topic);
+        if (!ex || ex.h !== h) ops.push({ k: 'pub', t, seq, at, body, h });
+      }
+    }
+    for (const op of ops) {
+      try {
+        if (op.k === 'pub') {
+          await ntPublish(op.body);
+          const ex = op.t.nt.find((x) => x.seq === op.seq && x.topic === op.body.topic);
+          if (ex) { ex.h = op.h; ex.at = op.at; } else op.t.nt.push({ seq: op.seq, at: op.at, h: op.h, topic: op.body.topic });
+        } else {
+          await ntDelete(op.x.topic, op.x.seq);
+          if (op.delivered) op.x.cleared = true; else op.t.nt = op.t.nt.filter((y) => y !== op.x);
+        }
+        S.settings.ntfy.err = '';
+      } catch (e) { if (/429/.test(e.message)) break; }
+      await sleep(220);
+    }
+    S.tasks = S.tasks.filter((t) => !(t.deleted && !(t.nt || []).some((x) => x.at > Date.now())));
+    S.settings.ntfy.lastSync = Date.now();
+  } finally {
+    syncing = false; saveNow();
+    if (resync) { resync = false; ntfySync(); }
+  }
+}
+// canal de controle: ações feitas por fora (botões da notificação abertos em outro navegador)
+async function ctlSend(acao, id) {
+  const nt = S.settings.ntfy; if (!nt.on || PREVIEW) return;
+  try { await ntPublish({ topic: nt.topic + '-ctl', message: acao + ':' + id }); } catch (e) {}
+}
+async function ctlPoll() {
+  const nt = S.settings.ntfy; if (!nt.on || PREVIEW) return;
+  try {
+    const since = nt.ctlSince ? Math.floor(nt.ctlSince / 1000) : '12h';
+    const r = await fetch(ntBase() + '/' + encodeURIComponent(nt.topic + '-ctl') + '/json?poll=1&since=' + since, { cache: 'no-store' });
+    if (!r.ok) return;
+    const lines = (await r.text()).split('\n').filter(Boolean);
+    let changed = false;
+    for (const ln of lines) {
+      let m; try { m = JSON.parse(ln); } catch (e) { continue; }
+      if (m.event !== 'message' || !m.message) continue;
+      nt.ctlSince = Math.max(nt.ctlSince || 0, (m.time || 0) * 1000 + 1000);
+      const [acao, id] = m.message.split(':');
+      const t = getTask(id); if (!t) continue;
+      if (acao === 'feito' && !t.done) { markDone(t, { quiet: true }); changed = true; }
+      if (acao === 'parar' && t.alarm) { muteTask(t, { quiet: true }); changed = true; }
+    }
+    if (changed) save();
+  } catch (e) {}
+}
+async function ntfyTest() {
+  const nt = S.settings.ntfy;
+  if (PREVIEW) { toast('Na prévia o envio fica bloqueado. No app instalado funciona!'); return false; }
+  try {
+    const r = await ntPublish({ topic: nt.topic, title: '🎉 Funcionou, ' + S.settings.name + '!', message: 'Seu bonequinho vai te cutucar por aqui, mesmo com o app fechado.', priority: 4, click: APP_URL, icon: ICON_URL });
+    nt.ok = Date.now(); nt.on = true; nt.err = ''; saveNow(); ntfySync();
+    return r;
+  } catch (e) { nt.err = nt.err || 'Não consegui enviar. Confere a internet.'; saveNow(); return false; }
+}
+
+/* ============ ações vindas de URL / notificação ============ */
+async function handleAction(acao, id, params) {
+  const t = id ? getTask(id) : null;
+  if (acao === 'voz') { openVoice(true); return; }
+  if (!t) {
+    // tarefa não existe neste navegador: cancela a série direto no ntfy e avisa o app principal
+    if (params && params.get('tp') && (acao === 'feito' || acao === 'parar')) {
+      const topic = params.get('tp'), a = parseInt(params.get('a'), 36) * MIN, e = (+params.get('e') || 0) * MIN;
+      const fake = { id, anchor: a }; const now = Date.now();
+      try { await ntfyFetch(ntBase() + '/', { method: 'POST', body: JSON.stringify({ topic: topic + '-ctl', message: acao + ':' + id }) }); } catch (er) {}
+      const slots = []; if (e) { for (let at = a + Math.max(0, Math.ceil((now - a) / e)) * e, i = 0; i < 30 && at < now + 3 * DAY; at += e, i++) slots.push(at); } else if (a > now) slots.push(a);
+      for (const at of slots) { try { await ntfyFetch(ntBase() + '/' + encodeURIComponent(topic) + '/' + seqFor(fake, at) + '/delete', { method: 'GET' }); } catch (er) {} await sleep(150); }
+      say(acao === 'feito' ? 'Feito! Cancelei os próximos avisos 🎉' : 'Parei os avisos 🔕', acao === 'feito' ? 'party' : 'normal', 5000, true);
+      if (acao === 'feito') celebrate();
+    } else if (id) toast('Essa tarefa não está mais na lista.');
+    return;
+  }
+  if (acao === 'feito') { markDone(t); ctlSend('feito', t.id); }
+  else if (acao === 'parar') { muteTask(t); ctlSend('parar', t.id); }
+  else if (acao === 'ver') { if (!t.done) { const s = lastSlotUpTo(t, Date.now()) || t.dueAt; t.shown = s; queueOverlay(t, s); } else openTask(t); }
+}
+function handleUrl() {
+  const p = new URLSearchParams(location.search);
+  const acao = p.get('acao'); if (!acao) return;
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  setTimeout(() => handleAction(acao, p.get('id'), p), 350);
+}
+
+/* ============ voz (tipo Alexa) ============ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let rec = null, voiceMode = 'new', voicePending = null, voiceFinal = '', voiceTimer = null;
+function voiceUI(state, q, t, btns) {
+  const v = $('#voice'); v.classList.remove('hidden'); v.classList.toggle('listening', state === 'listen');
+  $('#voiceAv').innerHTML = avatarSVG(S.avatar, state === 'listen' ? 'listen' : state === 'ok' ? 'happy' : state === 'err' ? 'worried' : 'talk');
+  if (q != null) $('#voiceQ').innerHTML = q;
+  if (t != null) { $('#voiceT').innerHTML = t || '…'; $('#voiceT').classList.toggle('dim', !t); }
+  $('#voiceBtns').innerHTML = (btns || []).map((b, i) => `<button class="btn ${b.cls || ''}" data-vb="${i}">${b.l}</button>`).join('');
+  $$('#voiceBtns [data-vb]').forEach((el) => el.onclick = () => btns[+el.dataset.vb].f());
+}
+function closeVoice() { clearTimeout(voiceTimer); try { rec && rec.abort(); } catch (e) {} rec = null; $('#voice').classList.add('hidden'); voicePending = null; voiceMode = 'new'; render(); }
+function openVoice(needTap) {
+  audio();
+  if (!SR) {
+    voiceUI('err', 'Meu ouvido não funciona aqui 🙉', PREVIEW ? 'Na prévia dentro do Claude o microfone é bloqueado. No app instalado (Chrome) funciona.' : 'Este navegador não liberou o reconhecimento de voz. Dica: toque na caixa de texto e use o 🎤 do teclado — eu entendo do mesmo jeito!', [
+      { l: 'Usar teclado', cls: 'primary', f: () => { closeVoice(); $('#inp').focus(); } }, { l: 'Fechar', f: closeVoice }]);
+    return;
+  }
+  if (needTap) { voiceUI('idle', 'Fala comigo! 🎧', 'Toque em “Falar” e diga o lembrete.', [{ l: 'Cancelar', f: closeVoice }, { l: '🎤 Falar', cls: 'primary', f: () => listen('new') }]); return; }
+  listen('new');
+}
+function listen(mode) {
+  voiceMode = mode; voiceFinal = '';
+  try { speechSynthesis && speechSynthesis.cancel(); } catch (e) {}
+  try { rec && rec.abort(); } catch (e) {}
+  rec = new SR(); rec.lang = 'pt-BR'; rec.interimResults = true; rec.continuous = false; rec.maxAlternatives = 1;
+  const q = mode === 'when' ? `Pra quando? ⏰` : `Fala que o ${esc(BOT())} anota! 🎧`;
+  const hint = mode === 'when' ? 'Ex.: “às 3 da tarde”, “amanhã de manhã”, “daqui a 20 minutos”' : 'Ex.: “me lembra de tirar o lixo às 8 da noite”';
+  voiceUI('listen', q, `<span style="color:var(--muted)">${hint}</span>`, [{ l: 'Cancelar', f: closeVoice }, { l: '✋ Pronto', cls: 'primary', f: () => { try { rec.stop(); } catch (e) {} } }]);
+  rec.onresult = (e) => {
+    let fin = '', inter = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) { const r = e.results[i]; if (r.isFinal) fin += r[0].transcript; else inter += r[0].transcript; }
+    if (fin) voiceFinal += fin;
+    $('#voiceT').classList.remove('dim'); $('#voiceT').textContent = (voiceFinal + ' ' + inter).trim() || '…';
+  };
+  rec.onerror = (e) => {
+    rec._err = e.error;
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') voiceUI('err', 'Preciso do microfone 🎙️', 'Libera o microfone pro app (no Chrome: cadeado ao lado do endereço → Permissões → Microfone). Ou use o 🎤 do teclado.', [{ l: 'Fechar', f: closeVoice }, { l: 'Tentar de novo', cls: 'primary', f: () => listen(mode) }]);
+    else if (e.error === 'no-speech') voiceUI('err', 'Não ouvi nada 🙉', 'Tenta de novo, mais pertinho.', [{ l: 'Cancelar', f: closeVoice }, { l: '🎤 De novo', cls: 'primary', f: () => listen(mode) }]);
+    else if (e.error !== 'aborted') voiceUI('err', 'Deu ruim no microfone 😅', 'Erro: ' + esc(e.error) + '. Tenta de novo ou use o teclado.', [{ l: 'Fechar', f: closeVoice }, { l: '🎤 De novo', cls: 'primary', f: () => listen(mode) }]);
+  };
+  rec.onend = () => { if (rec && rec._err) return; handleVoice(voiceFinal.trim() || $('#voiceT').textContent.replace(/^…$/, '').trim()); };
+  try { rec.start(); chime('listen'); buzz(25); } catch (e) { voiceUI('err', 'Não consegui abrir o microfone', esc(e.message || ''), [{ l: 'Fechar', f: closeVoice }]); }
+}
+function readAgenda() {
+  const now = Date.now();
+  const pend = S.tasks.filter((t) => !t.deleted && !t.done).sort((a, b) => a.dueAt - b.dueAt);
+  const hoje = pend.filter((t) => dayDiff(t.dueAt) <= 0);
+  if (!pend.length) return { txt: 'Você não tem nada pendente. Tudo em dia! 😎', speak: 'Você não tem nada pendente. Tudo em dia!' };
+  const list = (hoje.length ? hoje : pend).slice(0, 5);
+  const fala = (hoje.length ? `Pra hoje você tem ${hoje.length}: ` : `Hoje está livre. Próximas: `) + list.map((t) => t.text + (t.dueAt > now ? ', ' + spokenWhen(t.dueAt) : ', atrasada')).join('; ');
+  return { txt: list.map((t) => `• ${esc(t.text)} <small style="color:var(--muted)">${t.dueAt <= now ? '⚠️ atrasada' : fmtWhen(t.dueAt)}</small>`).join('<br>'), speak: fala };
+}
+function handleVoice(text) {
+  if (!text) { voiceUI('err', 'Não ouvi nada 🙉', 'Tenta de novo?', [{ l: 'Cancelar', f: closeVoice }, { l: '🎤 De novo', cls: 'primary', f: () => listen(voiceMode) }]); return; }
+  const low = text.toLowerCase();
+  if (voiceMode === 'new' && /^(?:o que|oque|quais?|qual)\b.*\b(?:tenho|tem|pendente|tarefas?|lembretes?|agenda|pra hoje|hoje)\b/.test(low)) {
+    const a = readAgenda(); voiceUI('ok', 'Sua lista 📋', a.txt, [{ l: 'Fechar', cls: 'primary', f: closeVoice }]); speak(a.speak, true); return;
+  }
+  if (voiceMode === 'when' && voicePending) {
+    const p = parseTask(text);
+    let due = p.due ?? (p.every ? Date.now() + p.every * MIN : null);
+    if (!due) {
+      const m = low.match(/\d{1,2}/);
+      if (m) due = parseTask('às ' + m[0] + 'h').due;
+    }
+    if (!due) due = Date.now() + HOUR;
+    finishVoiceTask(Object.assign({}, voicePending, { due, every: p.every ?? voicePending.every, recur: p.recur || voicePending.recur }));
+    return;
+  }
+  const p = parseTask(text);
+  const ttext = p.text || cap1(text);
+  if (!p.due && p.every == null && !p.recur) {
+    voicePending = { text: ttext, every: null, recur: null };
+    speak('Pra quando?', true);
+    setTimeout(() => listen('when'), 900);
+    voiceUI('talk', 'Pra quando? ⏰', `📝 ${esc(ttext)}`, []);
+    return;
+  }
+  finishVoiceTask({ text: ttext, due: p.due ?? Date.now() + (p.every || 60) * MIN, every: p.every, recur: p.recur });
+}
+function finishVoiceTask(d) {
+  const every = d.every ?? S.settings.every;
+  const t = addTask({ text: d.text, due: d.due, every, recur: d.recur });
+  voicePending = null;
+  chime('add'); buzz(30);
+  const line = `<b>${esc(t.text)}</b><br><small style="color:var(--muted)">⏰ ${fmtWhen(t.dueAt)} · 🔁 ${fmtEvery(every)}${t.recur !== 'none' ? ' · ♻️ ' + RECUR_SHORT[t.recur] : ''}</small>`;
+  voiceUI('ok', 'Anotado! ✅', line, [
+    { l: 'Desfazer', f: () => { S.tasks = S.tasks.filter((x) => x !== t); save(); ntfySync(); closeVoice(); toast('Lembrete apagado'); } },
+    { l: 'Editar', f: () => { closeVoice(); openTask(t); } },
+    { l: '👍 OK', cls: 'primary', f: closeVoice }
+  ]);
+  speak(`Beleza! Vou te lembrar de ${t.text}, ${spokenWhen(t.dueAt)}.`, true);
+  clearTimeout(voiceTimer); voiceTimer = setTimeout(() => { if (!$('#voice').classList.contains('hidden') && $('#voiceQ').textContent.startsWith('Anotado')) closeVoice(); }, 7000);
+  afterFirstTask();
+}
+
+/* ============ editor do bonequinho ============ */
+function openAvatarEditor() {
+  const A = JSON.parse(JSON.stringify(S.avatar));
+  const moods = ['normal', 'happy', 'talk', 'alert', 'worried', 'angry', 'party', 'sleep'];
+  let mi = 0;
+  const grp = (title, key, items) => `<h3>${title}</h3><div class="opts">${items.map(([v, l]) => `<button class="opt ${String(A[key]) === String(v) ? 'on' : ''}" data-k="${key}" data-v="${v}">${l}</button>`).join('')}</div>`;
+  const sw = (title, key, cols) => `<h3>${title}</h3><div class="opts">${cols.map((c, i) => `<button class="sw ${A[key] === i ? 'on' : ''}" style="background:${c}" data-k="${key}" data-v="${i}" aria-label="cor ${i + 1}"></button>`).join('')}</div>`;
+  function body() {
+    const photoMode = A.mode === 'photo';
+    const look = photoMode ? 'photo' : (A.style === 'pereira' ? 'pereira' : 'custom');
+    return `<h2>🎨 ${esc(BOT())}</h2>
+      <div class="av-stage" id="avStage" title="Toque pra ver as caras dele">${avatarSVG(A, moods[mi])}</div>
+      <div class="opts" style="justify-content:center;margin-bottom:6px"><button class="opt ${look === 'pereira' ? 'on' : ''}" data-k="look" data-v="pereira">⭐ ${esc(BOT())} trader</button><button class="opt ${look === 'custom' ? 'on' : ''}" data-k="look" data-v="custom">✏️ Montar do zero</button><button class="opt ${photoMode ? 'on' : ''}" data-k="look" data-v="photo">📸 Foto (cabeção)</button><button class="opt" id="avRand">🎲 Sortear</button></div>
+      ${photoMode ? `
+        <div class="note">Escolha uma selfie de frente. Vira um <b>cabeção</b> num corpinho de desenho — caricatura raiz 😄. A foto fica só no seu celular.</div>
+        <input type="file" id="avFile" accept="image/*" class="btn block">
+        ${A.photo ? `<div class="field"><label>Zoom</label><input type="range" min="0.8" max="2.6" step="0.02" value="${A.pz}" data-r="pz"></div>
+        <div class="field"><label>Mover pros lados</label><input type="range" min="-60" max="60" step="1" value="${A.px}" data-r="px"></div>
+        <div class="field"><label>Mover pra cima/baixo</label><input type="range" min="-60" max="60" step="1" value="${A.py}" data-r="py"></div>` : ''}
+        ${sw('Pele (pescoço e mãos)', 'skin', SKINS)}
+        ${sw('Camisa', 'shirt', SHIRTS)}
+        ${grp('Boné', 'cap', [[false, 'Sem'], [true, 'Com boné']])}
+      ` : look === 'pereira' ? `
+        <div class="note">Toque nele pra ver as caras: feliz, falando, alerta, preocupado, <b>joinha pra baixo</b> (quando você ignora o aviso) e comemorando.</div>
+        ${sw('Pele', 'skin', SKINS)}
+        ${sw('Cabelo e barba', 'hairColor', HAIRC)}
+        ${sw('Camisa polo', 'shirt', SHIRTS)}
+      ` : `
+        ${sw('Pele', 'skin', SKINS)}
+        ${grp('Rosto', 'face', [['round', 'Redondo'], ['oval', 'Comprido'], ['square', 'Quadrado']])}
+        ${grp('Cabelo', 'hair', [['careca', 'Careca'], ['raspado', 'Raspado'], ['curto', 'Curto'], ['topete', 'Topete'], ['entradas', 'Entradas'], ['cacheado', 'Cacheado'], ['black', 'Black power'], ['comprido', 'Comprido']])}
+        ${sw('Cor do cabelo/barba', 'hairColor', HAIRC)}
+        ${grp('Barba', 'beard', [['none', 'Lisinho'], ['stubble', 'Por fazer'], ['mustache', 'Bigode'], ['goatee', 'Cavanhaque'], ['full', 'Barba cheia']])}
+        ${grp('Óculos', 'glasses', [['none', 'Sem'], ['round', 'Redondo'], ['square', 'Quadrado'], ['dark', 'Escuro']])}
+        ${grp('Sobrancelha', 'brows', [['normal', 'Normal'], ['thick', 'Grossa']])}
+        ${grp('Nariz', 'nose', [['normal', 'Normal'], ['big', 'Narigão']])}
+        ${grp('Orelhas', 'ears', [['normal', 'Normais'], ['abano', 'De abano']])}
+        ${grp('Boné', 'cap', [[false, 'Sem'], [true, 'Com boné']])}
+        ${sw('Camisa', 'shirt', SHIRTS)}
+      `}
+      <div class="btnrow"><button class="btn primary block" id="avSave">💾 Esse sou eu!</button></div>`;
+  }
+  function mount(el) {
+    el.querySelector('.inner').innerHTML = body();
+    $$('[data-k]', el).forEach((b) => b.onclick = () => {
+      const k = b.dataset.k; let v = b.dataset.v;
+      if (v === 'true') v = true; else if (v === 'false') v = false; else if (/^\d+$/.test(v)) v = +v;
+      if (k === 'look') { if (v === 'photo') A.mode = 'photo'; else { A.mode = 'draw'; A.style = v; if (v === 'pereira') { const P = PEREIRA(); A.skin = A.skin ?? P.skin; A.shirt = A.style === 'pereira' && A.shirt === 0 ? P.shirt : A.shirt; } } }
+      else A[k] = v; const y = el.scrollTop; mount(el); el.scrollTop = y;
+    });
+    $$('[data-r]', el).forEach((r) => r.oninput = () => { A[r.dataset.r] = +r.value; $('#avStage', el).innerHTML = avatarSVG(A, moods[mi]); });
+    $('#avStage', el).onclick = () => { mi = (mi + 1) % moods.length; $('#avStage', el).innerHTML = avatarSVG(A, moods[mi]); };
+    $('#avRand', el).onclick = () => {
+      const pick = (a) => a[Math.floor(Math.random() * a.length)];
+      Object.assign(A, { mode: 'draw', style: 'custom', skin: Math.floor(Math.random() * SKINS.length), face: pick(['round', 'oval', 'square']), hair: pick(['careca', 'raspado', 'curto', 'topete', 'entradas', 'cacheado', 'black', 'comprido']), hairColor: Math.floor(Math.random() * HAIRC.length), beard: pick(['none', 'stubble', 'mustache', 'goatee', 'full']), glasses: pick(['none', 'none', 'round', 'square', 'dark']), brows: pick(['normal', 'thick']), nose: pick(['normal', 'big']), ears: pick(['normal', 'normal', 'abano']), cap: Math.random() < .25, shirt: Math.floor(Math.random() * SHIRTS.length) });
+      const y = el.scrollTop; mount(el); el.scrollTop = y;
+    };
+    const f = $('#avFile', el);
+    if (f) f.onchange = async () => {
+      const file = f.files && f.files[0]; if (!file) return;
+      try {
+        const url = URL.createObjectURL(file);
+        const img = new Image(); img.src = url; await img.decode();
+        const c = document.createElement('canvas'); const N = 360; c.width = N; c.height = N;
+        const side = Math.min(img.naturalWidth, img.naturalHeight);
+        c.getContext('2d').drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, N, N);
+        A.photo = c.toDataURL('image/jpeg', 0.82); A.pz = 1; A.px = 0; A.py = 0; URL.revokeObjectURL(url);
+        mount(el);
+      } catch (e) { toast('Não consegui abrir essa foto 😕'); }
+    };
+    $('#avSave', el).onclick = () => {
+      if (A.mode === 'photo' && !A.photo) { toast('Escolhe uma foto primeiro 📸'); return; }
+      S.avatar = A; S.avatarDone = true; saveNow(); closeSheet(); lastHeroKey = '';
+      say('Ficou a minha cara! Quer dizer… a sua 😄', 'party', 3500); celebrate(); ntfySync();
+    };
+  }
+  openSheet('', mount);
+}
+
+/* ============ configurações ============ */
+function openSettings() {
+  const st = S.settings, nt = st.ntfy;
+  const sw = (id, on, t, sub) => `<label class="switch"><span>${t}${sub ? `<small>${sub}</small>` : ''}</span><span class="tg"><input type="checkbox" id="${id}" ${on ? 'checked' : ''}><span></span></span></label>`;
+  openSheet(`
+    <h2>⚙️ Configurações</h2>
+    <div class="row"><div class="field"><label>Como eu te chamo?</label><input type="text" id="sName" value="${esc(st.name)}" maxlength="30"></div><div class="field"><label>Nome do bonequinho</label><input type="text" id="sBot" value="${esc(BOT())}" maxlength="20"></div></div>
+    <div class="btnrow" style="margin-top:4px"><button class="btn sun" id="sAvatar">🎨 Editar o ${esc(BOT())}</button><button class="btn" id="sNtfy">🔔 Avisos no celular</button></div>
+    <div class="note ${nt.on && nt.ok ? 'ok' : 'warn'}">${nt.on && nt.ok ? '✅ Avisos com o app fechado: <b>ligados</b> (ntfy).' : '⚠️ Avisos com o app fechado ainda <b>não configurados</b>. Sem isso eu só consigo te avisar com o app aberto.'}</div>
+    <h3>Avisos</h3>
+    <div class="field"><label>Insistir por padrão</label><select id="sEvery">${[15, 30, 60, 120, 180, 0].map((v) => `<option value="${v}" ${v === st.every ? 'selected' : ''}>${fmtEvery(v)}</option>`).join('')}</select></div>
+    ${sw('sQuiet', st.quiet.on, '🌙 Horário de silêncio', 'Não insisto nesse horário (o 1º aviso no horário que você marcou sempre toca)')}
+    <div class="row"><div class="field"><label>Das</label><input type="time" id="sQf" value="${esc(st.quiet.from)}"></div><div class="field"><label>Até</label><input type="time" id="sQt" value="${esc(st.quiet.to)}"></div></div>
+    ${sw('sStrong', st.strong, '📢 Insistência aumenta', 'Do 4º aviso em diante a notificação vem no volume máximo')}
+    ${sw('sSound', st.sound, '🔊 Sons no app')}
+    ${sw('sVib', st.vibrate, '📳 Vibrar')}
+    ${sw('sSpeak', st.speak, '🗣️ Bonequinho fala os lembretes em voz alta')}
+    <h3>Backup</h3>
+    <p style="font-size:14px;color:var(--muted)">Suas tarefas ficam só neste celular. Faça um backup de vez em quando.</p>
+    <div class="btnrow"><button class="btn" id="sExp">⬇️ Exportar</button><label class="btn" style="text-align:center">⬆️ Importar<input type="file" id="sImp" accept="application/json,.json" hidden></label></div>
+    <div class="btnrow"><button class="btn ghost" id="sInstall">📲 Como instalar na tela inicial</button></div>
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:16px">Lembra Aí! · feito sob medida pro ${esc(st.name)} 🧡</p>
+  `, (el) => {
+    $('#sName').oninput = (e) => { st.name = e.target.value.trim() || 'você'; save(); ntfySync(); };
+    $('#sBot').oninput = (e) => { st.botName = e.target.value.trim() || 'Pereira'; save(); lastHeroKey = ''; ntfySync(); };
+    $('#sEvery').onchange = (e) => { st.every = +e.target.value; save(); };
+    $('#sQuiet').onchange = (e) => { st.quiet.on = e.target.checked; save(); ntfySync(); };
+    $('#sQf').onchange = (e) => { st.quiet.from = e.target.value || '23:00'; save(); ntfySync(); };
+    $('#sQt').onchange = (e) => { st.quiet.to = e.target.value || '07:00'; save(); ntfySync(); };
+    $('#sStrong').onchange = (e) => { st.strong = e.target.checked; save(); ntfySync(); };
+    $('#sSound').onchange = (e) => { st.sound = e.target.checked; save(); };
+    $('#sVib').onchange = (e) => { st.vibrate = e.target.checked; save(); };
+    $('#sSpeak').onchange = (e) => { st.speak = e.target.checked; save(); if (st.speak) speak('Oi! Vou falar seus lembretes assim.', true); };
+    $('#sAvatar').onclick = () => { closeSheet(); openAvatarEditor(); };
+    $('#sNtfy').onclick = () => { closeSheet(); openNtfy(); };
+    $('#sInstall').onclick = () => { closeSheet(); openInstall(); };
+    $('#sExp').onclick = () => {
+      const data = JSON.stringify({ app: 'lembraai', v: 1, at: new Date().toISOString(), tasks: S.tasks.filter((t) => !t.deleted), settings: S.settings, avatar: S.avatar }, null, 1);
+      try {
+        const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([data], { type: 'application/json' }));
+        a.download = 'lembraai-backup-' + new Date().toISOString().slice(0, 10) + '.json'; document.body.appendChild(a); a.click(); a.remove();
+        toast('⬇️ Backup salvo em Downloads');
+      } catch (e) { navigator.clipboard && navigator.clipboard.writeText(data).then(() => toast('Backup copiado (cole num bloco de notas)')); }
+    };
+    $('#sImp').onchange = async (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      try {
+        const d = JSON.parse(await f.text()); if (d.app !== 'lembraai' || !Array.isArray(d.tasks)) throw new Error('arquivo inválido');
+        const ids = new Set(S.tasks.map((t) => t.id)); let n = 0;
+        for (const t of d.tasks) if (!ids.has(t.id)) { t.nt = []; S.tasks.push(t); n++; }
+        if (d.avatar) S.avatar = d.avatar;
+        saveNow(); ntfySync(); closeSheet(); toast(`⬆️ ${n} tarefa(s) importada(s)`);
+      } catch (er) { toast('Arquivo de backup inválido'); }
+    };
+  });
+}
+
+/* ============ configuração do ntfy ============ */
+function openNtfy() {
+  const nt = S.settings.ntfy;
+  const host = ntBase().replace(/^https?:\/\//, '');
+  openSheet(`
+    <h2>🔔 Avisos com o app fechado</h2>
+    <p>O navegador sozinho só consegue te avisar com o app aberto. Pra eu te cutucar <b>de hora em hora mesmo com o celular bloqueado</b>, uso o <b>ntfy</b> — um app de notificações gratuito e de código aberto.</p>
+    <ol class="steps">
+      <li>Instale o app <b>ntfy</b>: <a href="https://play.google.com/store/apps/details?id=io.heckel.ntfy" target="_blank" rel="noopener">Play Store (Android)</a> · <a href="https://ntfy.sh" target="_blank" rel="noopener">iPhone</a></li>
+      <li>Abra o ntfy, toque no <b>+</b> e inscreva-se neste tópico (é a sua “senha”, não compartilhe):
+        <code class="topic" id="nTopic">${esc(nt.topic)}</code>
+        <div class="btnrow" style="margin-top:4px"><button class="btn sm" id="nCopy">📋 Copiar tópico</button><a class="btn sm" style="text-decoration:none;text-align:center" href="ntfy://${esc(host)}/${esc(nt.topic)}">📲 Abrir no ntfy</a></div>
+      </li>
+      <li>Volte aqui e toque em <b>Enviar teste</b>. Chegou a notificação? Pronto! 🎉</li>
+    </ol>
+    <div class="btnrow"><button class="btn primary block" id="nTest">🚀 Enviar teste</button></div>
+    <div id="nStatus"></div>
+    <label class="switch"><span>Avisos pelo ntfy<small>${nt.on ? 'Ligado' : 'Desligado'}</small></span><span class="tg"><input type="checkbox" id="nOn" ${nt.on ? 'checked' : ''}><span></span></span></label>
+    <div class="note"><b>📱 Xiaomi / POCO (importante):</b> em <i>Configurações → Apps → Gerenciar apps → ntfy</i>: <b>Início automático</b> ligado, <b>Economia de bateria → Sem restrições</b>, e em <b>Notificações</b> libere tudo (tela de bloqueio, pop-up/flutuante, som). Faça o mesmo pro <b>Chrome</b>. Senão o sistema “mata” os avisos pra economizar bateria.</div>
+    <h3>Avançado</h3>
+    <div class="field"><label>Avisos deixados agendados por tarefa (renovo sempre que você abre o app)</label><input type="number" id="nAhead" min="3" max="48" value="${nt.ahead}"></div>
+    <div class="field"><label>Servidor</label><input type="text" id="nServer" value="${esc(nt.server)}"></div>
+    <div class="btnrow"><button class="btn ghost" id="nNew">🔄 Gerar tópico novo</button></div>
+    <p style="font-size:12.5px;color:var(--muted)">Hoje: ${nt.day === new Date().toDateString() ? nt.sent : 0} envios ao ntfy. O plano grátis tem limite diário; por isso deixo no máximo ${nt.ahead} avisos agendados por tarefa e renovo quando você abre o app.</p>
+  `, (el) => {
+    const status = () => { $('#nStatus', el).innerHTML = nt.err ? `<div class="note warn">⚠️ ${esc(nt.err)}</div>` : nt.ok ? `<div class="note ok">✅ Último teste enviado ${fmtWhen(nt.ok)}. Se não chegou no ntfy, confere se o tópico está igualzinho.</div>` : ''; };
+    status();
+    $('#nCopy', el).onclick = () => {
+      const txt = nt.topic;
+      (navigator.clipboard ? navigator.clipboard.writeText(txt) : Promise.reject()).then(() => toast('📋 Tópico copiado')).catch(() => { const r = document.createRange(); r.selectNodeContents($('#nTopic', el)); const s = getSelection(); s.removeAllRanges(); s.addRange(r); toast('Selecionei o tópico — copie manualmente'); });
+    };
+    $('#nTest', el).onclick = async (e) => {
+      e.target.disabled = true; e.target.textContent = '⏳ Enviando…';
+      const ok = await ntfyTest();
+      e.target.disabled = false; e.target.textContent = '🚀 Enviar teste';
+      if (ok) { $('#nOn', el).checked = true; say('Mandei! Olha o ntfy 📲', 'happy', 3500); }
+      status(); renderSetup();
+    };
+    $('#nOn', el).onchange = (e) => { nt.on = e.target.checked; saveNow(); ntfySync(); };
+    $('#nAhead', el).onchange = (e) => { nt.ahead = Math.max(3, Math.min(48, +e.target.value || 12)); saveNow(); ntfySync(); };
+    $('#nServer', el).onchange = (e) => { const v = e.target.value.trim(); if (/^https?:\/\//.test(v)) { nt.server = v; saveNow(); ntfySync(); } };
+    let armed = false;
+    $('#nNew', el).onclick = (e) => {
+      if (!armed) { armed = true; e.target.textContent = '⚠️ Toque de novo (vai precisar inscrever de novo no ntfy)'; return; }
+      nt.topic = genTopic(); nt.ok = 0; saveNow(); ntfySync(); closeSheet(); openNtfy();
+    };
+  });
+}
+
+/* ============ instalação ============ */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; $('#btnInstall').classList.remove('hidden'); });
+window.addEventListener('appinstalled', () => { S.installed = true; save(); $('#btnInstall').classList.add('hidden'); renderSetup(); toast('📲 Instalado! Agora eu moro na sua tela inicial.'); });
+async function openInstall() {
+  if (deferredPrompt) { deferredPrompt.prompt(); const r = await deferredPrompt.userChoice.catch(() => null); deferredPrompt = null; if (r && r.outcome === 'accepted') { S.installed = true; save(); renderSetup(); } return; }
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  openSheet(`<h2>📲 Instalar na tela inicial</h2>
+    ${isStandalone() ? '<div class="note ok">✅ Você já está usando o app instalado!</div>' : ''}
+    ${ios ? `<ol class="steps"><li>Abra este endereço no <b>Safari</b>.</li><li>Toque em <b>Compartilhar</b> (quadrado com seta).</li><li>Escolha <b>Adicionar à Tela de Início</b>.</li></ol>`
+    : `<ol class="steps"><li>Abra este endereço no <b>Chrome</b>.</li><li>Toque nos <b>⋮</b> (canto de cima).</li><li>Escolha <b>Instalar app</b> (ou <i>Adicionar à tela inicial → Instalar</i>).</li><li>Abra o <b>Lembra Aí!</b> pelo ícone novo.</li></ol>
+    <div class="note">Dica: segure o dedo no ícone do app → <b>Falar um lembrete</b> abre direto o microfone. Tipo Alexa 😉</div>`}
+    <div class="btnrow"><button class="btn" id="iDone">Já instalei</button><button class="btn primary" id="iOk">Fechar</button></div>`, (el) => {
+    $('#iDone', el).onclick = () => { S.installed = true; save(); closeSheet(); };
+    $('#iOk', el).onclick = closeSheet;
+  });
+}
+
+/* ============ inicialização ============ */
+function bind() {
+  const ta = $('#inp');
+  ta.addEventListener('input', () => { autoGrow(); renderComposer(); });
+  ta.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submitComposer(); } });
+  $('#addBtn').onclick = submitComposer;
+  $('#mic').onclick = () => openVoice(false);
+  $('#heroAv').onclick = () => openVoice(false);
+  $('#repChip').onclick = () => {
+    const p = parseTask(ta.value); const cur = compEvery ?? (p.every ?? S.settings.every);
+    const i = EVERY_OPTS.indexOf(cur); compEvery = EVERY_OPTS[(i + 1) % EVERY_OPTS.length]; renderComposer();
+  };
+  $('#pickDt').onchange = () => { compWhenKey = 'pick'; compWhen = fromLocalInput($('#pickDt').value); renderComposer(); };
+  $('#btnSettings').onclick = openSettings;
+  $('#btnInstall').onclick = openInstall;
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { tick(); render(); ntfySync(); ctlPoll(); } });
+  document.addEventListener('pointerdown', () => { audio(); if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); }, { once: true });
+  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener('message', (e) => { if (e.data && e.data.type === 'acao') handleAction(e.data.acao, e.data.id); });
+}
+async function init() {
+  if (PREVIEW) $('#previewBanner').classList.remove('hidden');
+  bind();
+  render(); renderComposer();
+  if (!PREVIEW && 'serviceWorker' in navigator) {
+    try { reg = await navigator.serviceWorker.register('sw.js'); } catch (e) { reg = null; }
+  }
+  handleUrl();
+  setInterval(tick, 5000); setTimeout(tick, 800);
+  setInterval(() => { ntfySync(); }, 30 * MIN);
+  setInterval(() => { if (document.visibilityState === 'visible') renderList(); }, 60000);
+  ntfySync(); ctlPoll();
+  if (!S._welcomed) {
+    S._welcomed = true; save();
+    setTimeout(() => say(`Oi, ${esc(S.settings.name)}! Eu sou o ${esc(BOT())}, teu lembrador oficial 👋<small>Toque em mim e fala o que eu te lembro.</small>`, 'party', 6000), 400);
+  }
+  // pede permissão de notificação do navegador no 1º toque (backup quando o ntfy não está ligado)
+  if (!PREVIEW && 'Notification' in window && Notification.permission === 'default') {
+    document.addEventListener('click', function ask() { document.removeEventListener('click', ask); try { Notification.requestPermission(); } catch (e) {} }, { once: true });
+  }
+}
+window.__LA = { get S() { return S; }, parseTask, slotsBetween, lastSlotUpTo, ntfySyncNow, tick, handleAction, avatarSVG, payloadFor, inQuiet };
+init();
+})();
+</script>
+</body>
+</html>
